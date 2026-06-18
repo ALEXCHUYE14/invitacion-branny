@@ -5,7 +5,7 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 var CFG = {
   audioSrc:  "audio/cenicienta.mp3",
-  whatsapp:  "519250729470",
+  whatsapp:  "51950729470",
   eventDate: "2026-07-10T20:00:00-05:00",
   mapsQuery: "Gaetano Sullana Piura Perú"
 };
