@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#07071E" />
+  <title>Branny Sayumi · Mis XV Años</title>
+  <meta name="description" content="Invitación a los XV Años de Branny Sayumi Curay Sotomayor — Viernes 10 de julio de 2026, Gaetano, Sullana." />
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<!-- Stars Background -->
+<div class="stars-canvas" id="starsCanvas" aria-hidden="true"></div>
+
+<!-- ╔══════════════════════════════════════════════════════════╗
+     ║            TARJETA PRINCIPAL                            ║
+     ╚══════════════════════════════════════════════════════════╝ -->
+<main class="invite">
+
+
+  <!-- ═══════════════ HERO ═══════════════ -->
+  <section class="hero">
+
+    <!-- Destellos (JS los genera) -->
+    <div class="hero-sparkles" id="heroSparkles" aria-hidden="true"></div>
+
+    <!-- Corona -->
+    <div class="crown-wrap" aria-hidden="true">
+      <svg class="crown-svg" viewBox="0 0 110 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 54 L20 16 L42 40 L55 6 L68 40 L90 16 L102 54 Z"
+              fill="none" stroke="url(#cgr)" stroke-width="1.6" stroke-linejoin="round"/>
+        <circle cx="55" cy="6"   r="3.5" fill="url(#cgr)"/>
+        <circle cx="20" cy="16"  r="3"   fill="url(#cgr)"/>
+        <circle cx="90" cy="16"  r="3"   fill="url(#cgr)"/>
+        <circle cx="8"  cy="54"  r="2.5" fill="url(#cgr)"/>
+        <circle cx="102" cy="54" r="2.5" fill="url(#cgr)"/>
+        <line x1="5" y1="58" x2="105" y2="58" stroke="url(#cgr)" stroke-width="1.2" stroke-linecap="round"/>
+        <defs>
+          <linearGradient id="cgr" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#C9A84C"/>
+            <stop offset="50%"  stop-color="#F0D878"/>
+            <stop offset="100%" stop-color="#C9A84C"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <p class="hero-eyebrow">Tengo el honor de invitarte a</p>
+
+    <!-- Foto de Sayumi -->
+    <div class="portrait" role="img" aria-label="Fotografía de Branny Sayumi">
+      <div class="portrait-ring portrait-ring-1" aria-hidden="true"></div>
+      <div class="portrait-ring portrait-ring-2" aria-hidden="true"></div>
+      <img
+        src="img/sayumi.jpeg"
+        alt="Branny Sayumi Curay Sotomayor"
+        class="portrait-img"
+        loading="eager"
+        decoding="async"
+      />
+      <div class="portrait-shimmer" aria-hidden="true"></div>
+    </div>
+
+    <!-- Nombre -->
+    <h1 class="hero-name">
+      <span class="name-l1" data-split>Branny</span>
+      <span class="name-l2" data-split>Sayumi</span>
+    </h1>
+
+    <p class="hero-tagline">
+      La magia de cumplir quince años<br>merece ser vivida contigo
+    </p>
+
+    <p class="hero-xv">— Mis Quince Años —</p>
+
+    <div class="scroll-cue" aria-hidden="true">
+      <span class="scroll-label">Descubrir</span>
+      <div class="scroll-line"></div>
+    </div>
+
+  </section>
+
+
+  <!-- ─── Divisor ─── -->
+  <div class="sec-divider" aria-hidden="true">
+    <span class="div-gem">✦</span>
+    <span class="div-rule"></span>
+    <span class="div-gem">✦</span>
+  </div>
+
+
+  <!-- ═══════════════ CUENTA REGRESIVA ═══════════════ -->
+  <section class="countdown reveal">
+    <p class="sec-eyebrow">Cuenta regresiva</p>
+    <h2 class="sec-title">La noche se acerca</h2>
+
+    <div class="countdown-grid" id="cdGrid" role="timer" aria-live="off" aria-label="Tiempo restante para el evento">
+      <div class="cd-cell">
+        <span class="cd-num" id="cdD">00</span>
+        <span class="cd-lab">Días</span>
+      </div>
+      <div class="cd-cell">
+        <span class="cd-num" id="cdH">00</span>
+        <span class="cd-lab">Horas</span>
+      </div>
+      <div class="cd-cell">
+        <span class="cd-num" id="cdM">00</span>
+        <span class="cd-lab">Min</span>
+      </div>
+      <div class="cd-cell">
+        <span class="cd-num" id="cdS">00</span>
+        <span class="cd-lab">Seg</span>
+      </div>
+    </div>
+
+    <p class="countdown-date">Viernes 10 de Julio · 2026 · 8:00 p.m.</p>
+  </section>
+
+
+  <!-- ─── Divisor ─── -->
+  <div class="sec-divider" aria-hidden="true">
+    <span class="div-gem">✦</span>
+    <span class="div-rule"></span>
+    <span class="div-gem">✦</span>
+  </div>
+
+
+  <!-- ═══════════════ FRASE ═══════════════ -->
+  <section class="intro reveal">
+    <blockquote class="intro-quote">
+      <span class="q-mark q-open">"</span>Dejo atrás la niña que fui
+      para abrazar a la mujer que comienzo a ser.<span class="q-mark q-close">"</span>
+    </blockquote>
+  </section>
+
+
+  <!-- ─── Divisor ─── -->
+  <div class="sec-divider" aria-hidden="true">
+    <span class="div-gem">✦</span>
+    <span class="div-rule"></span>
+    <span class="div-gem">✦</span>
+  </div>
+
+
+  <!-- ═══════════════ PADRES ═══════════════ -->
+  <section class="padres reveal">
+    <p class="sec-eyebrow">Con la bendición de Dios</p>
+    <h2 class="sec-title">y el amor de mis padres</h2>
+
+    <div class="family-names">
+      <p class="family-name">
+        Juan Rolando<br>
+        <span>Curay Miranda</span>
+      </p>
+      <p class="family-amp" aria-hidden="true">&amp;</p>
+      <p class="family-name">
+        Liz Jaqueline<br>
+        <span>Sotomayor Nieves</span>
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ─── Divisor ─── -->
+  <div class="sec-divider" aria-hidden="true">
+    <span class="div-gem">✦</span>
+    <span class="div-rule"></span>
+    <span class="div-gem">✦</span>
+  </div>
+
+
+  <!-- ═══════════════ PADRINOS ═══════════════ -->
+  <section class="padrinos reveal">
+    <p class="sec-eyebrow">Con su amor y generosidad</p>
+    <h2 class="sec-title">Nuestros Padrinos</h2>
+    <p class="padrinos-sub">Personas especiales que hacen posible esta noche mágica</p>
+
+    <div class="padrinos-grid">
+
+      <!-- Padrinos Principales -->
+      <div class="padrino-card">
+        <span class="padrino-icon" aria-hidden="true">👑</span>
+        <span class="padrino-label">Padrinos</span>
+        <p class="padrino-name">Patricia Sánchez Quispe</p>
+        <span class="padrino-amp" aria-hidden="true">&amp;</span>
+        <p class="padrino-name">Gustavo Adolfo Ramírez Miranda</p>
+      </div>
+
+      <!-- Padrinos de Joyas -->
+      <div class="padrino-card featured">
+        <span class="padrino-icon" aria-hidden="true">💎</span>
+        <span class="padrino-label">Padrinos de Joyas</span>
+        <p class="padrino-brand">Ridu Joyería</p>
+        <p class="padrino-name">Richard Durand Gonzales</p>
+        <span class="padrino-amp" aria-hidden="true">&amp; Esposa</span>
+      </div>
+
+      <!-- Padrinos Maquillaje y Zapatos -->
+      <div class="padrino-card">
+        <span class="padrino-icon" aria-hidden="true">✨</span>
+        <span class="padrino-label">Padrinos de Maquillaje y Zapatos</span>
+        <p class="padrino-name">Yennifer Tatiana Alama Oblea</p>
+        <span class="padrino-amp" aria-hidden="true">&amp;</span>
+        <p class="padrino-name">Gustavo Adolfo Ramírez Miranda</p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ─── Divisor ─── -->
+  <div class="sec-divider" aria-hidden="true">
+    <span class="div-gem">✦</span>
+    <span class="div-rule"></span>
+    <span class="div-gem">✦</span>
+  </div>
+
+
+  <!-- ═══════════════ DETALLES DEL EVENTO ═══════════════ -->
+  <section class="detalles reveal">
+    <p class="sec-eyebrow">Los detalles</p>
+    <h2 class="sec-title">¿Cuándo y dónde?</h2>
+
+    <div class="detalles-cards">
+
+      <div class="detalle-item">
+        <span class="detalle-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+               stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8"  y1="2" x2="8"  y2="6"/>
+            <line x1="3"  y1="10" x2="21" y2="10"/>
+          </svg>
+        </span>
+        <p class="detalle-key">Fecha y Hora</p>
+        <p class="detalle-val">Viernes 10 de Julio</p>
+        <p class="detalle-sub">2026 &nbsp;·&nbsp; 8:00 p.m.</p>
+      </div>
+
+      <div class="detalle-sep" aria-hidden="true"></div>
+
+      <div class="detalle-item">
+        <span class="detalle-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </span>
+        <p class="detalle-key">Lugar</p>
+        <p class="detalle-val">Gaetano — Sullana</p>
+        <p class="detalle-sub">Frente al Colegio Miguel Cortés de Sullana</p>
+      </div>
+
+    </div>
+
+    <a class="maps-btn" id="mapsBtn" href="#" target="_blank" rel="noopener noreferrer">
+      <svg class="maps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+        <circle cx="12" cy="10" r="3"/>
+      </svg>
+      Cómo llegar · Google Maps
+    </a>
+  </section>
+
+
+  <!-- ─── Divisor ─── -->
+  <div class="sec-divider" aria-hidden="true">
+    <span class="div-gem">✦</span>
+    <span class="div-rule"></span>
+    <span class="div-gem">✦</span>
+  </div>
+
+
+  <!-- ═══════════════ CTA — CONFIRMAR ASISTENCIA ═══════════════ -->
+  <section class="cta reveal">
+    <p class="sec-eyebrow">Tu lugar te espera</p>
+    <h2 class="sec-title">Acepta la Invitación</h2>
+    <p class="cta-sub">Tu presencia hará de esta noche un recuerdo para siempre.</p>
+
+    <!-- Advertencia de lista en puerta -->
+    <div class="cta-notice" role="note">
+      <svg class="notice-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+        <line x1="12" y1="9"  x2="12" y2="13"/>
+        <line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      <span>Pondré <strong>lista en puerta</strong> — solo podrán ingresar quienes <strong>confirmen su asistencia</strong>.</span>
+    </div>
+
+    <!-- Campo de nombre -->
+    <div class="field-wrap" id="fieldWrap">
+      <label class="field-label" for="guestName">Tu nombre completo</label>
+      <div class="field-line">
+        <input
+          type="text"
+          id="guestName"
+          name="guestName"
+          class="field-input"
+          placeholder="Escribe tu nombre aquí…"
+          autocomplete="name"
+          enterkeyhint="send"
+        />
+      </div>
+      <p class="field-error" id="fieldError" role="alert" aria-live="assertive"></p>
+    </div>
+
+    <!-- Botón WhatsApp -->
+    <button class="accept-btn" id="acceptBtn" type="button">
+      <svg class="wa-icon" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+        <path d="M16 0C7.164 0 0 7.163 0 16c0 2.85.748 5.526 2.05 7.855L0 32l8.35-2.022A15.95
+                 15.95 0 0 0 16 32c8.836 0 16-7.164 16-16S24.836 0 16 0zm0 29.25c-2.64
+                 0-5.118-.71-7.24-1.946l-.52-.308-5.386 1.303 1.337-5.236-.34-.543A13.22
+                 13.22 0 0 1 2.75 16C2.75 8.683 8.684 2.75 16 2.75S29.25 8.683 29.25
+                 16 23.316 29.25 16 29.25zm7.206-9.918c-.394-.197-2.332-1.147-2.694-1.278
+                 -.362-.13-.625-.196-.888.197s-1.02 1.278-1.25 1.54c-.23.263-.46.296-.854.099
+                 -.394-.197-1.663-.611-3.167-1.948-1.17-1.04-1.96-2.325-2.19-2.718-.23-.394
+                 -.025-.607.172-.803.178-.176.394-.46.591-.69.197-.23.263-.394.394-.657.131
+                 -.263.066-.493-.033-.69-.099-.197-.888-2.135-1.217-2.923-.32-.768-.647-.664
+                 -.888-.676l-.756-.013c-.263 0-.69.099-1.052.493-.362.394-1.382 1.35-1.382
+                 3.29s1.415 3.816 1.612 4.079c.197.263 2.783 4.247 6.74 5.953.942.407
+                 1.677.65 2.25.832.946.3 1.806.258 2.487.156.758-.114 2.332-.952
+                 2.66-1.873.329-.921.329-1.711.23-1.873-.098-.164-.362-.263-.756-.46z"/>
+      </svg>
+      Aceptar Invitación
+    </button>
+  </section>
+
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer class="footer">
+    <p class="footer-mono">XV</p>
+    <div class="footer-rule" aria-hidden="true"></div>
+    <p class="footer-name">Branny Sayumi Curay Sotomayor</p>
+    <p class="footer-date">10 · 07 · 2026 — Sullana, Piura</p>
+    <p class="footer-magic" aria-hidden="true">✦ &nbsp; La magia comienza a las 8 de la noche &nbsp; ✦</p>
+
+    <!-- Firma del desarrollador -->
+    <div class="footer-dev">
+      <p class="dev-credit">Diseñado y desarrollado con precisión por</p>
+      <p class="dev-name">ing. Miguel Flores - Piura</p>
+      <p class="dev-tagline">Especialistas en Soluciones Digitales de Alto Impacto</p>
+    </div>
+  </footer>
+
+
+</main><!-- /invite -->
+
+
+<!-- ═══════════════ BOTÓN DE AUDIO FLOTANTE ═══════════════ -->
+<button
+  class="audio-fab"
+  id="audioBtn"
+  type="button"
+  aria-label="Reproducir música"
+  aria-pressed="false"
+>
+  <span class="fab-ring" aria-hidden="true"></span>
+  <span class="fab-bars" aria-hidden="true">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </span>
+  <svg class="fab-play-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <polygon points="5,3 19,12 5,21"/>
+  </svg>
+</button>
+
+
+<script src="js/main.js"></script>
+</body>
+</html>
