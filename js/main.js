@@ -5,9 +5,10 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 var CFG = {
   audioSrc:  "audio/cenicienta.mp3",
-  whatsapp:  "51950729470",
+  whatsapp:  "51950729460",
   eventDate: "2026-07-10T20:00:00-05:00",
-  mapsQuery: "Gaetano Sullana Piura Perú"
+  mapsQuery: "Gaetano Sullana Piura Perú",
+  sheetsUrl: ""
 };
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -168,49 +169,70 @@ var CFG = {
 }());
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   CONFIRMACIÓN POR WHATSAPP
+   CONFIRMACIÓN POR WHATSAPP + GOOGLE SHEETS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 (function initConfirm() {
-  var input    = document.getElementById("guestName");
-  var wrap     = document.getElementById("fieldWrap");
-  var errorEl  = document.getElementById("fieldError");
+  var inpName  = document.getElementById("guestName");
+  var inpDni   = document.getElementById("guestDni");
+  var inpCel   = document.getElementById("guestCel");
+  var wrapName = document.getElementById("fieldWrapName");
+  var wrapDni  = document.getElementById("fieldWrapDni");
+  var wrapCel  = document.getElementById("fieldWrapCel");
+  var errName  = document.getElementById("fieldErrorName");
+  var errDni   = document.getElementById("fieldErrorDni");
+  var errCel   = document.getElementById("fieldErrorCel");
   var acceptEl = document.getElementById("acceptBtn");
 
-  if (!input || !wrap || !errorEl || !acceptEl) return;
+  if (!inpName || !inpDni || !inpCel || !acceptEl) return;
 
-  var errorTimer = null;
-
-  function showError(msg) {
-    clearTimeout(errorTimer);
+  function showError(wrap, errEl, msg) {
     wrap.classList.add("has-error");
-    errorEl.textContent = msg;
-    input.focus();
-    errorTimer = setTimeout(function() {
-      wrap.classList.remove("has-error");
-    }, 1800);
+    errEl.textContent = msg;
   }
 
-  function clearError() {
-    clearTimeout(errorTimer);
+  function clearError(wrap, errEl) {
     wrap.classList.remove("has-error");
-    errorEl.textContent = "";
+    errEl.textContent = "";
   }
 
-  function sendConfirmation() {
-    var name = input.value.trim();
+  function sendToSheets(name, dni, cel) {
+    if (!CFG.sheetsUrl) return;
+    var body = new URLSearchParams({ nombre: name, dni: dni, celular: cel });
+    fetch(CFG.sheetsUrl, { method: "POST", mode: "no-cors", body: body })
+      .catch(function() {});
+  }
+
+  function validateAndSend() {
+    var name = inpName.value.trim();
+    var dni  = inpDni.value.replace(/\D/g, "");
+    var cel  = inpCel.value.trim();
+
+    clearError(wrapName, errName);
+    clearError(wrapDni,  errDni);
+    clearError(wrapCel,  errCel);
 
     if (!name) {
-      showError("Por favor escribe tu nombre para confirmar.");
+      showError(wrapName, errName, "Por favor escribe tu nombre completo.");
+      inpName.focus();
+      return;
+    }
+    if (dni.length !== 8) {
+      showError(wrapDni, errDni, "El DNI debe tener exactamente 8 dígitos.");
+      inpDni.focus();
+      return;
+    }
+    if (cel.replace(/\D/g, "").length < 7) {
+      showError(wrapCel, errCel, "Ingresa un número de celular válido.");
+      inpCel.focus();
       return;
     }
 
-    clearError();
+    sendToSheets(name, dni, cel);
 
     var msg = encodeURIComponent(
       "¡Hola! Confirmo mi asistencia para los 15 años de Branny Sayumi. " +
-      "Mi nombre es: " + name
+      "Mis datos son: Nombre: " + name + ", DNI: " + dni + ", Celular: " + cel
     );
-
     window.open(
       "https://wa.me/" + CFG.whatsapp + "?text=" + msg,
       "_blank",
@@ -218,13 +240,22 @@ var CFG = {
     );
   }
 
-  acceptEl.addEventListener("click", sendConfirmation);
+  acceptEl.addEventListener("click", validateAndSend);
 
-  input.addEventListener("keydown", function(e) {
-    if (e.key === "Enter") sendConfirmation();
+  inpName.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") { e.preventDefault(); inpDni.focus(); }
+  });
+  inpDni.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") { e.preventDefault(); inpCel.focus(); }
+  });
+  inpCel.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") validateAndSend();
   });
 
-  input.addEventListener("input", clearError);
+  [[inpName, wrapName, errName], [inpDni, wrapDni, errDni], [inpCel, wrapCel, errCel]]
+    .forEach(function(t) {
+      t[0].addEventListener("input", function() { clearError(t[1], t[2]); });
+    });
 }());
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -285,6 +285,77 @@
   </div>
 
 
+  <!-- ═══════════════ DRESS CODE ═══════════════ -->
+  <section class="dresscode reveal">
+    <p class="sec-eyebrow">Etiqueta &amp; Elegancia</p>
+    <h2 class="sec-title">Código de Vestimenta</h2>
+    <p class="dc-intro">Viste a la altura de esta noche mágica</p>
+
+    <div class="dc-reserved-card">
+      <div class="dc-celeste-stripe" aria-hidden="true"></div>
+      <div class="dc-reserved-content">
+        <span class="dc-reserved-badge">Reservado · Quinceañera</span>
+        <p class="dc-reserved-title">Celeste</p>
+        <p class="dc-reserved-desc">
+          Este color queda exclusivamente para nuestra festejada.<br>
+          <em>Te agradecemos gentilmente evitarlo en tu atuendo.</em>
+        </p>
+      </div>
+    </div>
+
+    <p class="dc-palette-label">Colores de etiqueta sugeridos</p>
+
+    <div class="dc-swatches" role="list" aria-label="Paleta de colores permitidos">
+      <div class="dc-swatch-item" role="listitem">
+        <div class="dc-swatch" style="--c:#F5F5F0;" aria-label="Blanco"></div>
+        <span class="dc-swatch-name">Blanco</span>
+      </div>
+      <div class="dc-swatch-item" role="listitem">
+        <div class="dc-swatch" style="--c:#D4AF37;" aria-label="Dorado"></div>
+        <span class="dc-swatch-name">Dorado</span>
+      </div>
+      <div class="dc-swatch-item" role="listitem">
+        <div class="dc-swatch" style="--c:#B8C0CC;" aria-label="Plateado"></div>
+        <span class="dc-swatch-name">Plateado</span>
+      </div>
+      <div class="dc-swatch-item" role="listitem">
+        <div class="dc-swatch" style="--c:#1A1A2E;" aria-label="Azul noche"></div>
+        <span class="dc-swatch-name">Azul Noche</span>
+      </div>
+      <div class="dc-swatch-item" role="listitem">
+        <div class="dc-swatch" style="--c:#7B2D42;" aria-label="Vino"></div>
+        <span class="dc-swatch-name">Vino</span>
+      </div>
+      <div class="dc-swatch-item" role="listitem">
+        <div class="dc-swatch" style="--c:#2C3E3E;" aria-label="Verde musgo"></div>
+        <span class="dc-swatch-name">Verde Musgo</span>
+      </div>
+      <div class="dc-swatch-item" role="listitem">
+        <div class="dc-swatch" style="--c:#3B2045;" aria-label="Púrpura"></div>
+        <span class="dc-swatch-name">Púrpura</span>
+      </div>
+      <div class="dc-swatch-item" role="listitem">
+        <div class="dc-swatch" style="--c:#1C1C1C;" aria-label="Negro"></div>
+        <span class="dc-swatch-name">Negro</span>
+      </div>
+    </div>
+
+    <p class="dc-note">
+      Cualquier color de etiqueta es bienvenido —<br>
+      con la gentil excepción del celeste,<br>
+      que pertenece exclusivamente a nuestra festejada.
+    </p>
+  </section>
+
+
+  <!-- ─── Divisor ─── -->
+  <div class="sec-divider" aria-hidden="true">
+    <span class="div-gem">✦</span>
+    <span class="div-rule"></span>
+    <span class="div-gem">✦</span>
+  </div>
+
+
   <!-- ═══════════════ CTA — CONFIRMAR ASISTENCIA ═══════════════ -->
   <section class="cta reveal">
     <p class="sec-eyebrow">Tu lugar te espera</p>
@@ -302,21 +373,39 @@
       <span>Pondré <strong>lista en puerta</strong> — solo podrán ingresar quienes <strong>confirmen su asistencia</strong>.</span>
     </div>
 
-    <!-- Campo de nombre -->
-    <div class="field-wrap" id="fieldWrap">
-      <label class="field-label" for="guestName">Tu nombre completo</label>
-      <div class="field-line">
-        <input
-          type="text"
-          id="guestName"
-          name="guestName"
-          class="field-input"
-          placeholder="Escribe tu nombre aquí…"
-          autocomplete="name"
-          enterkeyhint="send"
-        />
+    <!-- Formulario de confirmación -->
+    <div class="form-fields">
+
+      <div class="field-wrap" id="fieldWrapName">
+        <label class="field-label" for="guestName">Nombre Completo</label>
+        <div class="field-line">
+          <input type="text" id="guestName" name="guestName" class="field-input"
+                 placeholder="Escribe tu nombre completo…"
+                 autocomplete="name" enterkeyhint="next" />
+        </div>
+        <p class="field-error" id="fieldErrorName" role="alert" aria-live="assertive"></p>
       </div>
-      <p class="field-error" id="fieldError" role="alert" aria-live="assertive"></p>
+
+      <div class="field-wrap" id="fieldWrapDni">
+        <label class="field-label" for="guestDni">Número de DNI</label>
+        <div class="field-line">
+          <input type="text" id="guestDni" name="guestDni" class="field-input"
+                 placeholder="8 dígitos de tu DNI…"
+                 autocomplete="off" inputmode="numeric" maxlength="8" enterkeyhint="next" />
+        </div>
+        <p class="field-error" id="fieldErrorDni" role="alert" aria-live="assertive"></p>
+      </div>
+
+      <div class="field-wrap" id="fieldWrapCel">
+        <label class="field-label" for="guestCel">Número de Celular</label>
+        <div class="field-line">
+          <input type="tel" id="guestCel" name="guestCel" class="field-input"
+                 placeholder="Ej: 987 654 321…"
+                 autocomplete="tel" inputmode="numeric" enterkeyhint="send" />
+        </div>
+        <p class="field-error" id="fieldErrorCel" role="alert" aria-live="assertive"></p>
+      </div>
+
     </div>
 
     <!-- Botón WhatsApp -->

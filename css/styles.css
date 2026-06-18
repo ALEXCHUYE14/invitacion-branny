@@ -1021,6 +1021,146 @@ section {
 }
 
 /* ================================================================
+   DRESS CODE
+================================================================ */
+.dresscode {
+  background: linear-gradient(180deg, rgba(18,18,80,.08), rgba(212,175,55,.03), transparent);
+}
+
+.dc-intro {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--silver-dim);
+  margin-top: 8px;
+  margin-bottom: 32px;
+}
+
+.dc-reserved-card {
+  display: flex;
+  align-items: stretch;
+  background: var(--glass);
+  border: 1px solid rgba(135,206,235,.22);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 36px;
+  text-align: left;
+}
+
+.dc-celeste-stripe {
+  width: 5px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, #87CEEB, #4FC3F7, #87CEEB);
+  opacity: .75;
+}
+
+.dc-reserved-content {
+  padding: 22px 20px;
+  flex: 1;
+}
+
+.dc-reserved-badge {
+  display: inline-block;
+  font-family: var(--roman);
+  font-size: .42rem;
+  letter-spacing: .42em;
+  text-transform: uppercase;
+  color: #87CEEB;
+  border: 1px solid rgba(135,206,235,.32);
+  border-radius: 20px;
+  padding: 4px 12px 3px;
+  margin-bottom: 14px;
+}
+
+.dc-reserved-title {
+  font-family: var(--serif);
+  font-size: 1.45rem;
+  font-weight: 500;
+  color: #B0D8EF;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.dc-reserved-desc {
+  font-family: var(--serif);
+  font-size: .9rem;
+  color: var(--silver-dim);
+  line-height: 1.68;
+}
+
+.dc-reserved-desc em {
+  font-style: italic;
+  color: rgba(176,216,239,.65);
+}
+
+.dc-palette-label {
+  font-family: var(--roman);
+  font-size: .5rem;
+  letter-spacing: .36em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 22px;
+  padding-left: .36em;
+}
+
+.dc-swatches {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px 10px;
+  margin-bottom: 30px;
+}
+
+.dc-swatch-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.dc-swatch {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: var(--c);
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow: 0 4px 14px -4px rgba(0,0,0,.5);
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+
+.dc-swatch-item:hover .dc-swatch {
+  transform: scale(1.18);
+  box-shadow: 0 8px 20px -4px rgba(0,0,0,.55);
+}
+
+.dc-swatch-name {
+  font-family: var(--sans);
+  font-size: .6rem;
+  color: var(--silver-dim);
+  letter-spacing: .03em;
+}
+
+.dc-note {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: .92rem;
+  color: var(--silver-dim);
+  line-height: 1.78;
+  max-width: 30ch;
+  margin: 0 auto;
+}
+
+/* Multi-field form container */
+.form-fields {
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.form-fields .field-wrap {
+  max-width: 100%;
+  margin: 0 0 26px;
+}
+
+/* ================================================================
    AUDIO FLOATING BUTTON
 ================================================================ */
 .audio-fab {
