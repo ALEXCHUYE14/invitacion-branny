@@ -202,6 +202,22 @@ var CFG = {
       .catch(function() {});
   }
 
+  /* Abre WhatsApp de forma fiable en móvil y escritorio.
+     Usa un <a> temporal para evitar el bloqueador de popups
+     ya que window.open con features string puede bloquearse en iOS/Android. */
+  function openWhatsApp(url) {
+    var a = document.createElement("a");
+    a.href = url;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.style.cssText = "position:fixed;left:-9999px;top:-9999px;";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function() {
+      if (document.body.contains(a)) { document.body.removeChild(a); }
+    }, 500);
+  }
+
   function validateAndSend() {
     var name = inpName.value.trim();
     var dni  = inpDni.value.replace(/\D/g, "");
@@ -227,17 +243,24 @@ var CFG = {
       return;
     }
 
+    /* 1. Registrar en Google Sheets (fire & forget — no-cors no retorna datos útiles) */
     sendToSheets(name, dni, cel);
 
-    var msg = encodeURIComponent(
-      "¡Hola! Confirmo mi asistencia para los 15 años de Branny Sayumi. " +
-      "Mis datos son: Nombre: " + name + ", DNI: " + dni + ", Celular: " + cel
-    );
-    window.open(
-      "https://wa.me/" + CFG.whatsapp + "?text=" + msg,
-      "_blank",
-      "noopener,noreferrer"
-    );
+    /* 2. Abrir WhatsApp inmediatamente desde el mismo hilo de eventos del click
+          para que el navegador no lo trate como popup no solicitado.
+          Se usa \n en el mensaje: encodeURIComponent lo convierte en %0A,
+          que WhatsApp interpreta como salto de línea. */
+    var mensaje =
+      "Hola 👑 Confirmo mi asistencia a los XV Años de Branny Sayumi 🎀\n" +
+      "─────────────────────────\n" +
+      "👤 Nombre : " + name + "\n" +
+      "🪪 DNI    : " + dni  + "\n" +
+      "📱 Celular: " + cel  + "\n" +
+      "─────────────────────────\n" +
+      "¡Estaré presente en tan especial celebración! ✨";
+
+    var waUrl = "https://wa.me/" + CFG.whatsapp + "?text=" + encodeURIComponent(mensaje);
+    openWhatsApp(waUrl);
   }
 
   acceptEl.addEventListener("click", validateAndSend);
@@ -393,4 +416,95 @@ var CFG = {
       track.play().catch(function() {});
     }
   });
+}());
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   DESTELLOS GLOBALES — aparecen en todas las secciones
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+(function initGlobalSparkles() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  /* Paleta de colores y sus glows */
+  var COLORS = [
+    { c: "rgba(255,255,255,.88)",   g: "rgba(200,235,255,.80)" },  /* blanco puro    */
+    { c: "rgba(200,232,255,.80)",   g: "rgba(135,200,240,.70)" },  /* celeste claro  */
+    { c: "rgba(212,175, 55,.70)",   g: "rgba(212,175, 55,.50)" },  /* dorado suave   */
+    { c: "rgba(180,220,248,.75)",   g: "rgba(100,185,240,.65)" },  /* azul hielo     */
+    { c: "rgba(255,255,255,.95)",   g: "rgba(255,255,255,.60)" }   /* blanco brillante */
+  ];
+
+  /* Tipos: 'sym' = símbolo Unicode, 'dot' = punto, 'cross' = cruceta CSS */
+  var SYMS = ["✦", "✧", "⋆", "✦", "✧", "✦", "⋆", "✦"];
+
+  /* Cuántas partículas por sección (aleatorio entre min y max) */
+  function randInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  function randF(min, max) {
+    return (Math.random() * (max - min) + min);
+  }
+
+  function buildParticle(container) {
+    var types    = ["sym", "sym", "sym", "dot", "dot", "cross"];
+    var type     = types[randInt(0, types.length - 1)];
+    var color    = COLORS[randInt(0, COLORS.length - 1)];
+    var dur      = randF(2.2, 5.8).toFixed(2);
+    var delay    = randF(0, 7).toFixed(2);
+    var lift     = -randF(8, 22).toFixed(1);
+    var rot      = randF(-35, 35).toFixed(1);
+    var op       = randF(0.55, 0.92).toFixed(2);
+    var left     = randF(2, 97).toFixed(2);
+    var top      = randF(3, 96).toFixed(2);
+
+    var el = document.createElement("span");
+    el.setAttribute("aria-hidden", "true");
+
+    var baseClass = "sspark sspark--" + type;
+    el.className  = baseClass;
+
+    var sz;
+    if (type === "sym") {
+      sz = randF(0.45, 1.0).toFixed(2) + "rem";
+      el.textContent = SYMS[randInt(0, SYMS.length - 1)];
+    } else if (type === "dot") {
+      sz = randF(2, 5).toFixed(1) + "px";
+    } else {
+      sz = randF(5, 9).toFixed(1) + "px";
+    }
+
+    el.style.cssText =
+      "left:"      + left  + "%;"  +
+      "top:"       + top   + "%;"  +
+      "--sd:"      + dur   + "s;"  +
+      "--dd:"      + delay + "s;"  +
+      "--lift:"    + lift  + "px;" +
+      "--rot:"     + rot   + "deg;"+
+      "--op:"      + op    + ";"   +
+      "--sz:"      + sz    + ";"   +
+      "--sc:"      + color.c + ";" +
+      "--sg:"      + color.g + ";";
+
+    container.appendChild(el);
+  }
+
+  /* Inyectar en cada .section-sparkles */
+  var containers = document.querySelectorAll(".section-sparkles");
+  containers.forEach(function(ctr) {
+    var count = randInt(14, 22);
+    var frag  = document.createDocumentFragment();
+    for (var i = 0; i < count; i++) {
+      buildParticle(frag);
+    }
+    ctr.appendChild(frag);
+  });
+
+  /* También densificar el hero con partículas adicionales del nuevo tipo */
+  var heroExtra = document.getElementById("heroSparkles");
+  if (heroExtra) {
+    var frag2 = document.createDocumentFragment();
+    for (var j = 0; j < 10; j++) {
+      buildParticle(frag2);
+    }
+    heroExtra.appendChild(frag2);
+  }
 }());

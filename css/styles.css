@@ -44,13 +44,30 @@ html {
 
 body {
   font-family: var(--sans);
-  background: linear-gradient(165deg, #9DC3DF 0%, #AECDE8 45%, #B8D5EE 100%);
+  background: linear-gradient(135deg,
+    #4A8FB8  0%,
+    #6AAFD4 12%,
+    #90C8E8 25%,
+    #B2DCEF 37%,
+    #CCE9F5 50%,
+    #B2DCEF 63%,
+    #90C8E8 75%,
+    #6AAFD4 88%,
+    #4A8FB8 100%);
+  background-size: 400% 400%;
+  animation: cinderella-bg 20s ease-in-out infinite;
   color: var(--silver);
   min-height: 100vh;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+}
+
+@keyframes cinderella-bg {
+  0%   { background-position:   0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position:   0% 50%; }
 }
 
 ::selection {
@@ -115,18 +132,24 @@ body {
   width: 100%;
   max-width: var(--maxw);
   margin: 0 auto;
-  background: linear-gradient(175deg,
-    #E4F2FB 0%,
-    #D4EAF8 18%,
-    #C6E2F6 40%,
-    #BCD8F2 65%,
-    #C8E2F8 85%,
-    #D0E8FB 100%);
+  background:
+    radial-gradient(ellipse at 28% 18%, rgba(255,255,255,.38) 0%, transparent 52%),
+    radial-gradient(ellipse at 72% 82%, rgba(180,225,248,.30) 0%, transparent 52%),
+    radial-gradient(ellipse at 65% 22%, rgba(200,240,255,.22) 0%, transparent 42%),
+    linear-gradient(175deg,
+      #EEF8FD  0%,
+      #E2F2FC 14%,
+      #D4EAF8 30%,
+      #C6E0F5 50%,
+      #BCD8F2 68%,
+      #C8E4F8 84%,
+      #D8EEF8 100%);
   overflow: hidden;
   box-shadow:
-    0 0 0 1px rgba(135,195,230,.38),
-    0 30px 80px -20px rgba(80,140,195,.22),
-    0 0 60px -30px rgba(135,200,240,.18);
+    0 0 0 1px rgba(135,195,230,.42),
+    0 40px 100px -20px rgba(60,120,175,.28),
+    0 0  80px -30px rgba(100,175,230,.22),
+    inset 0 1px 0 rgba(255,255,255,.55);
 }
 
 @media (min-width: 560px) {
@@ -973,12 +996,12 @@ section {
    FOOTER
 ================================================================ */
 .footer {
-  padding: 56px 36px 68px;
+  padding: 56px 36px 80px;
   text-align: center;
   background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(180,218,242,.55));
   border-top: 1px solid rgba(100,165,215,.30);
   position: relative;
-  z-index: 2;
+  z-index: 4;          /* encima de .roses-corner (z-index:3) */
 }
 
 .footer-mono {
@@ -1025,35 +1048,50 @@ section {
 /* Developer credits */
 .footer-dev {
   margin-top: 44px;
-  padding-top: 28px;
+  padding: 28px 28px 0;
   border-top: 1px solid rgba(100,165,215,.18);
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .dev-credit {
   font-family: var(--sans);
   font-size: .72rem;
-  color: rgba(30,60,110,.62);
+  color: rgba(30,60,110,.65);
   letter-spacing: .04em;
+  line-height: 1.6;
 }
 
 .dev-name {
   font-family: var(--roman);
-  font-size: .82rem;
-  letter-spacing: .12em;
+  font-size: .80rem;
+  letter-spacing: .10em;
   color: #8A6A1A;
   margin-top: 8px;
-  background: linear-gradient(90deg, #B8941E, #D4AF37, #C9A84C, #B8941E);
+  line-height: 1.7;
+  background: linear-gradient(90deg, #B8941E, #D4AF37, #C9A84C, #D4AF37, #B8941E);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: gold-shimmer 4s linear infinite;
+}
+
+@keyframes gold-shimmer {
+  0%   { background-position: 0%   center; }
+  100% { background-position: 200% center; }
 }
 
 .dev-tagline {
   font-family: var(--sans);
   font-size: .66rem;
-  color: rgba(30,60,110,.52);
-  margin-top: 5px;
+  color: rgba(30,60,110,.55);
+  margin-top: 6px;
   letter-spacing: .03em;
+  line-height: 1.6;
 }
 
 /* ================================================================
@@ -1420,6 +1458,58 @@ section {
 }
 
 /* ================================================================
+   DESTELLOS GLOBALES POR SECCIÓN
+================================================================ */
+.section-sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.sspark {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  animation: sspark-life var(--sd, 3s) ease-in-out var(--dd, 0s) infinite;
+  will-change: transform, opacity;
+}
+
+/* Variante símbolo (✦ ✧ ⋆) */
+.sspark--sym {
+  font-size: var(--sz, .7rem);
+  line-height: 1;
+  color: var(--sc, rgba(255,255,255,.80));
+  text-shadow: 0 0 8px var(--sg, rgba(135,200,240,.9));
+}
+
+/* Variante punto / gota */
+.sspark--dot {
+  width:  var(--sz, 3px);
+  height: var(--sz, 3px);
+  border-radius: 50%;
+  background: var(--sc, rgba(255,255,255,.88));
+  box-shadow: 0 0 6px 2px var(--sg, rgba(200,235,255,.6));
+}
+
+/* Variante cruz de 4 puntas (CSS puro, sin SVG) */
+.sspark--cross {
+  width:  var(--sz, 6px);
+  height: var(--sz, 6px);
+  background:
+    linear-gradient(var(--sc, rgba(255,255,255,.85)), var(--sc, rgba(255,255,255,.85))) center/1px 100%,
+    linear-gradient(var(--sc, rgba(255,255,255,.85)), var(--sc, rgba(255,255,255,.85))) center/100% 1px;
+  filter: blur(.3px) drop-shadow(0 0 3px var(--sg, rgba(200,235,255,.8)));
+}
+
+@keyframes sspark-life {
+  0%        { opacity: 0;    transform: translateY(0)                   scale(.3)  rotate(0deg); }
+  15%, 55%  { opacity: var(--op, .85); transform: translateY(var(--lift, -12px)) scale(1)    rotate(var(--rot, 20deg)); }
+  100%      { opacity: 0;    transform: translateY(calc(var(--lift, -12px) * 1.8)) scale(.4) rotate(calc(var(--rot, 20deg) * 2)); }
+}
+
+/* ================================================================
    PORTRAIT JEWEL ORNAMENT
 ================================================================ */
 .portrait-jewel {
@@ -1460,6 +1550,40 @@ section {
 @keyframes roses-breathe {
   0%, 100% { transform: scale(1) translateY(0); }
   50%       { transform: scale(1.012) translateY(-3px); }
+}
+
+/* ================================================================
+   CENICIENTA DECO — Zapatilla y varita junto al retrato
+================================================================ */
+.cinderella-deco {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 72px;
+  margin: -12px auto 8px;
+  pointer-events: none;
+  position: relative;
+  z-index: 2;
+  max-width: 280px;
+}
+
+.cinde-icon {
+  width: 48px;
+  height: auto;
+  opacity: .62;
+  filter: drop-shadow(0 0 10px rgba(100,185,240,.65));
+  animation: cinde-float 5.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.cinde-icon--right {
+  animation-delay: 2.75s;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes cinde-float {
+  0%, 100% { transform: translateY(0)   rotate(-3deg) scale(1);    }
+  50%       { transform: translateY(-7px) rotate(3deg) scale(1.04); }
 }
 
 /* ================================================================
