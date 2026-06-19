@@ -8,7 +8,7 @@ var CFG = {
   whatsapp:  "51950729460",
   eventDate: "2026-07-10T20:00:00-05:00",
   mapsQuery: "Gaetano Sullana Piura Perú",
-  sheetsUrl: ""
+  sheetsUrl: "https://script.google.com/macros/s/AKfycbw0zONZALbHB7Ax0Z6MRsE2teIXTR3ityE33m9XDmZS5rQgP7U2-5xOlwv5t0YtrnncZQ/exec"
 };
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
