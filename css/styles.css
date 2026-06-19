@@ -2,23 +2,24 @@
    VARIABLES & RESET — Cinderella Night · Branny Sayumi XV
 ================================================================ */
 :root {
-  --bg:          #07071E;
-  --card:        #0C0C30;
-  --card-mid:    #0E0E38;
-  --card-dark:   #080828;
+  /* ── Celestial Blue Cinderella Palette ── */
+  --bg:          #A8C8E4;
+  --card:        #DAEEFB;
+  --card-mid:    #CBDFF5;
+  --card-dark:   #B8D4EE;
 
-  --gold:        #D4AF37;
-  --gold-lit:    #F0D878;
-  --gold-dim:    #B8941E;
-  --gold-line:   rgba(212,175,55,.28);
-  --gold-glow:   rgba(212,175,55,.18);
+  --gold:        #3A6898;
+  --gold-lit:    #1A2D5A;
+  --gold-dim:    #2B5588;
+  --gold-line:   rgba(90,155,210,.38);
+  --gold-glow:   rgba(135,200,240,.22);
 
-  --silver:      #DDE6F0;
-  --silver-dim:  #8A9AB4;
-  --glass:       rgba(255,255,255,.04);
-  --glass-hi:    rgba(255,255,255,.07);
-  --error:       #F87171;
-  --white:       #FFFFFF;
+  --silver:      #1A3060;
+  --silver-dim:  #406090;
+  --glass:       rgba(255,255,255,.48);
+  --glass-hi:    rgba(255,255,255,.68);
+  --error:       #C0392B;
+  --white:       #0D1B42;
 
   --serif: 'Cormorant Garamond', Georgia, serif;
   --roman: 'Cinzel', serif;
@@ -43,7 +44,7 @@ html {
 
 body {
   font-family: var(--sans);
-  background: var(--bg);
+  background: linear-gradient(165deg, #9DC3DF 0%, #AECDE8 45%, #B8D5EE 100%);
   color: var(--silver);
   min-height: 100vh;
   line-height: 1.65;
@@ -86,15 +87,16 @@ body {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(ellipse at 25% 40%, rgba(26,41,128,.32) 0%, transparent 55%),
-    radial-gradient(ellipse at 78% 15%, rgba(18,18,80,.42) 0%, transparent 50%),
-    var(--bg);
+    radial-gradient(ellipse at 22% 28%, rgba(255,255,255,.30) 0%, transparent 50%),
+    radial-gradient(ellipse at 75% 18%, rgba(220,240,255,.25) 0%, transparent 48%),
+    radial-gradient(ellipse at 50% 72%, rgba(200,228,252,.18) 0%, transparent 55%),
+    transparent;
 }
 
 .star {
   position: absolute;
   border-radius: 50%;
-  background: #fff;
+  background: rgba(255,255,255,.9);
   opacity: 0;
   animation: star-blink var(--dur, 3s) ease-in-out var(--delay, 0s) infinite;
 }
@@ -113,12 +115,18 @@ body {
   width: 100%;
   max-width: var(--maxw);
   margin: 0 auto;
-  background: linear-gradient(175deg, var(--card) 0%, var(--card-mid) 50%, var(--card-dark) 100%);
+  background: linear-gradient(175deg,
+    #E4F2FB 0%,
+    #D4EAF8 18%,
+    #C6E2F6 40%,
+    #BCD8F2 65%,
+    #C8E2F8 85%,
+    #D0E8FB 100%);
   overflow: hidden;
   box-shadow:
-    0 0 0 1px var(--gold-line),
-    0 50px 120px -25px rgba(0,0,20,.95),
-    0 0 100px -40px var(--gold-glow);
+    0 0 0 1px rgba(135,195,230,.38),
+    0 30px 80px -20px rgba(80,140,195,.22),
+    0 0 60px -30px rgba(135,200,240,.18);
 }
 
 @media (min-width: 560px) {
@@ -129,8 +137,17 @@ body {
 .invite::before {
   content: "";
   position: absolute;
-  inset: 14px;
-  border: 1px solid rgba(212,175,55,.16);
+  inset: 12px;
+  border: 1px solid rgba(135,190,230,.28);
+  pointer-events: none;
+  z-index: 100;
+  border-radius: inherit;
+}
+.invite::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(135,190,230,.14);
   pointer-events: none;
   z-index: 100;
   border-radius: inherit;
@@ -230,12 +247,12 @@ section {
 .hero::before {
   content: "";
   position: absolute;
-  width: 360px;
-  height: 360px;
+  width: 380px;
+  height: 380px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -60%);
-  background: radial-gradient(circle, rgba(212,175,55,.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255,255,255,.28) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -249,7 +266,7 @@ section {
 
 .crown-svg {
   width: 72px;
-  filter: drop-shadow(0 0 14px rgba(212,175,55,.7));
+  filter: drop-shadow(0 0 14px rgba(120,190,230,.65));
   animation: crown-float 4s ease-in-out infinite;
 }
 
@@ -306,20 +323,20 @@ section {
 .portrait-ring-1 {
   inset: -7px;
   z-index: 3;
-  border: 1.5px solid rgba(212,175,55,.55);
+  border: 1.5px solid rgba(90,165,220,.55);
   animation: ring-pulse 3.2s ease-in-out infinite;
 }
 
 .portrait-ring-2 {
   inset: -16px;
   z-index: 1;
-  border: 1px solid rgba(212,175,55,.2);
+  border: 1px solid rgba(90,165,220,.22);
   animation: ring-pulse 3.2s ease-in-out .95s infinite;
 }
 
 @keyframes ring-pulse {
   0%, 100% { opacity: .4; }
-  50%       { opacity: 1; box-shadow: 0 0 18px rgba(212,175,55,.28); }
+  50%       { opacity: 1; box-shadow: 0 0 18px rgba(90,165,220,.28); }
 }
 
 .portrait-shimmer {
@@ -341,7 +358,7 @@ section {
   font-family: var(--serif);
   line-height: .93;
   color: var(--white);
-  text-shadow: 0 0 50px rgba(212,175,55,.28);
+  text-shadow: 0 2px 20px rgba(100,155,210,.22);
   margin-bottom: 6px;
   position: relative;
   z-index: 2;
@@ -355,11 +372,17 @@ section {
 
 .name-l2 {
   display: block;
-  font-size: clamp(2.4rem, 12vw, 3.6rem);
-  font-weight: 300;
-  font-style: italic;
-  color: var(--gold-lit);
+  font-family: 'Great Vibes', 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.8rem, 14vw, 4.2rem);
+  font-weight: 400;
+  font-style: normal;
+  color: #C9A84C;
   margin-top: 4px;
+  text-shadow:
+    0 0 28px rgba(212,175,55,.55),
+    0 0 60px rgba(212,175,55,.25),
+    0 2px 8px rgba(160,120,20,.20);
+  letter-spacing: .02em;
 }
 
 .ch {
@@ -465,7 +488,8 @@ section {
   position: absolute;
   opacity: 0;
   animation: sparkle-life var(--dur, 2.5s) ease-in-out var(--delay, 0s) infinite;
-  color: var(--gold-lit);
+  color: rgba(255,255,255,.85);
+  text-shadow: 0 0 8px rgba(135,200,240,.8);
 }
 
 @keyframes sparkle-life {
@@ -478,9 +502,12 @@ section {
    COUNTDOWN
 ================================================================ */
 .countdown {
-  background: linear-gradient(180deg, var(--glass), var(--glass-hi), var(--glass));
-  border-top: 1px solid var(--gold-line);
-  border-bottom: 1px solid var(--gold-line);
+  background: linear-gradient(180deg,
+    rgba(255,255,255,.32),
+    rgba(255,255,255,.50),
+    rgba(255,255,255,.32));
+  border-top: 1px solid rgba(135,195,230,.35);
+  border-bottom: 1px solid rgba(135,195,230,.35);
 }
 
 .countdown-grid {
@@ -491,8 +518,8 @@ section {
 }
 
 .cd-cell {
-  background: var(--glass);
-  border: 1px solid var(--gold-line);
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(100,165,215,.30);
   border-radius: 8px;
   padding: 20px 6px 16px;
   display: flex;
@@ -501,6 +528,7 @@ section {
   gap: 10px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px -6px rgba(80,140,200,.15);
 }
 
 .cd-num {
@@ -508,9 +536,9 @@ section {
   font-size: clamp(2rem, 9.5vw, 2.9rem);
   font-weight: 600;
   line-height: 1;
-  color: var(--gold-lit);
+  color: #1A2D5A;
   font-variant-numeric: tabular-nums;
-  text-shadow: 0 0 24px rgba(212,175,55,.45);
+  text-shadow: 0 0 20px rgba(100,165,220,.25);
 }
 
 .cd-lab {
@@ -532,7 +560,9 @@ section {
    INTRO
 ================================================================ */
 .intro {
-  background: linear-gradient(180deg, transparent, rgba(212,175,55,.04), transparent);
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,.22), transparent);
+  padding-top: 56px;
+  padding-bottom: 56px;
 }
 
 .intro-quote {
@@ -561,7 +591,7 @@ section {
    PARENTS
 ================================================================ */
 .padres {
-  background: linear-gradient(180deg, transparent, rgba(20,20,100,.1), transparent);
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,.20), transparent);
 }
 
 .family-names {
@@ -598,9 +628,9 @@ section {
    PADRINOS
 ================================================================ */
 .padrinos {
-  background: rgba(212,175,55,.025);
-  border-top: 1px solid var(--gold-line);
-  border-bottom: 1px solid var(--gold-line);
+  background: rgba(255,255,255,.28);
+  border-top: 1px solid rgba(135,195,230,.30);
+  border-bottom: 1px solid rgba(135,195,230,.30);
 }
 
 .padrinos-sub {
@@ -619,13 +649,14 @@ section {
 }
 
 .padrino-card {
-  background: var(--glass);
-  border: 1px solid var(--gold-line);
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(100,165,215,.28);
   border-radius: 10px;
   padding: 28px 22px 24px;
   position: relative;
   overflow: hidden;
   transition: border-color .3s var(--ease), box-shadow .3s var(--ease);
+  box-shadow: 0 4px 20px -8px rgba(80,135,195,.14);
 }
 
 .padrino-card::after {
@@ -639,9 +670,9 @@ section {
 }
 
 .padrino-card.featured {
-  border-color: rgba(212,175,55,.45);
-  background: rgba(212,175,55,.055);
-  box-shadow: 0 0 40px -18px rgba(212,175,55,.3);
+  border-color: rgba(90,155,210,.45);
+  background: rgba(255,255,255,.68);
+  box-shadow: 0 0 40px -18px rgba(90,155,210,.25);
 }
 
 .padrino-icon {
@@ -691,19 +722,20 @@ section {
 /* ================================================================
    EVENT DETAILS
 ================================================================ */
-.detalles { background: rgba(255,255,255,.015); }
+.detalles { background: rgba(255,255,255,.20); }
 
 .detalles-cards {
   display: flex;
   flex-direction: column;
   gap: 0;
   margin: 32px 0 28px;
-  border: 1px solid var(--gold-line);
+  border: 1px solid rgba(100,165,215,.28);
   border-radius: 10px;
   overflow: hidden;
-  background: var(--glass);
+  background: rgba(255,255,255,.55);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px -8px rgba(80,135,195,.14);
 }
 
 .detalle-item {
@@ -780,8 +812,8 @@ section {
 .maps-btn:hover,
 .maps-btn:focus-visible {
   background: var(--gold);
-  color: var(--bg);
-  box-shadow: 0 12px 30px -8px rgba(212,175,55,.55);
+  color: #FFFFFF;
+  box-shadow: 0 12px 30px -8px rgba(58,104,152,.45);
   transform: translateY(-2px);
 }
 
@@ -795,7 +827,7 @@ section {
    CTA
 ================================================================ */
 .cta {
-  background: linear-gradient(180deg, transparent, rgba(212,175,55,.06));
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,.25));
 }
 
 .cta-sub {
@@ -803,7 +835,7 @@ section {
   font-style: italic;
   font-size: 1.08rem;
   color: var(--silver-dim);
-  max-width: 28ch;
+  max-width: 36ch;
   margin: 10px auto 28px;
 }
 
@@ -811,8 +843,8 @@ section {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  background: rgba(212,175,55,.07);
-  border: 1px solid var(--gold-line);
+  background: rgba(255,255,255,.50);
+  border: 1px solid rgba(100,165,215,.30);
   border-radius: 8px;
   padding: 16px 18px;
   margin-bottom: 32px;
@@ -823,7 +855,7 @@ section {
 }
 
 .cta-notice strong {
-  color: var(--gold-lit);
+  color: #1A3060;
   font-weight: 600;
 }
 
@@ -854,7 +886,7 @@ section {
 }
 
 .field-line {
-  border-bottom: 1px solid rgba(212,175,55,.35);
+  border-bottom: 1px solid rgba(58,104,152,.38);
   transition: border-color .3s var(--ease);
 }
 
@@ -874,7 +906,7 @@ section {
   width: 100%;
   font-family: var(--serif);
   font-size: 1.18rem;
-  color: var(--white);
+  color: #0D1B42;
   background: transparent;
   border: none;
   padding: 10px 2px;
@@ -882,7 +914,7 @@ section {
 }
 
 .field-input::placeholder {
-  color: rgba(138,154,180,.42);
+  color: rgba(60,90,140,.38);
   font-style: italic;
 }
 
@@ -909,14 +941,14 @@ section {
   letter-spacing: .28em;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--bg);
-  background: linear-gradient(135deg, var(--gold-lit) 0%, var(--gold) 55%, var(--gold-dim) 100%);
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #5EB0E0 0%, #3A80B8 50%, #2A6098 100%);
   border: none;
   border-radius: 50px;
   cursor: pointer;
   box-shadow:
-    0 16px 36px -12px rgba(212,175,55,.65),
-    inset 0 1px 0 rgba(255,255,255,.2);
+    0 16px 36px -12px rgba(58,128,184,.55),
+    inset 0 1px 0 rgba(255,255,255,.28);
   transition: transform .35s var(--ease), box-shadow .35s var(--ease);
   -webkit-tap-highlight-color: transparent;
 }
@@ -925,8 +957,8 @@ section {
 .accept-btn:focus-visible {
   transform: translateY(-3px);
   box-shadow:
-    0 22px 44px -12px rgba(212,175,55,.8),
-    inset 0 1px 0 rgba(255,255,255,.25);
+    0 22px 44px -12px rgba(58,128,184,.75),
+    inset 0 1px 0 rgba(255,255,255,.35);
 }
 
 .accept-btn:active { transform: translateY(-1px); }
@@ -943,8 +975,8 @@ section {
 .footer {
   padding: 56px 36px 68px;
   text-align: center;
-  background: linear-gradient(180deg, var(--card-mid), #060618);
-  border-top: 1px solid var(--gold-line);
+  background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(180,218,242,.55));
+  border-top: 1px solid rgba(100,165,215,.30);
   position: relative;
   z-index: 2;
 }
@@ -986,7 +1018,7 @@ section {
   font-family: var(--serif);
   font-style: italic;
   font-size: .92rem;
-  color: rgba(212,175,55,.45);
+  color: rgba(58,104,152,.50);
   margin-top: 22px;
 }
 
@@ -994,37 +1026,41 @@ section {
 .footer-dev {
   margin-top: 44px;
   padding-top: 28px;
-  border-top: 1px solid rgba(212,175,55,.1);
+  border-top: 1px solid rgba(100,165,215,.18);
 }
 
 .dev-credit {
   font-family: var(--sans);
-  font-size: .7rem;
-  color: rgba(138,154,180,.55);
-  letter-spacing: .03em;
+  font-size: .72rem;
+  color: rgba(30,60,110,.62);
+  letter-spacing: .04em;
 }
 
 .dev-name {
   font-family: var(--roman);
-  font-size: .8rem;
-  letter-spacing: .14em;
-  color: rgba(212,175,55,.55);
-  margin-top: 6px;
+  font-size: .82rem;
+  letter-spacing: .12em;
+  color: #8A6A1A;
+  margin-top: 8px;
+  background: linear-gradient(90deg, #B8941E, #D4AF37, #C9A84C, #B8941E);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .dev-tagline {
   font-family: var(--sans);
-  font-size: .64rem;
-  color: rgba(138,154,180,.38);
-  margin-top: 4px;
-  letter-spacing: .02em;
+  font-size: .66rem;
+  color: rgba(30,60,110,.52);
+  margin-top: 5px;
+  letter-spacing: .03em;
 }
 
 /* ================================================================
    DRESS CODE
 ================================================================ */
 .dresscode {
-  background: linear-gradient(180deg, rgba(18,18,80,.08), rgba(212,175,55,.03), transparent);
+  background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.28), transparent);
 }
 
 .dc-intro {
@@ -1039,12 +1075,13 @@ section {
 .dc-reserved-card {
   display: flex;
   align-items: stretch;
-  background: var(--glass);
-  border: 1px solid rgba(135,206,235,.22);
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(135,196,235,.35);
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 36px;
   text-align: left;
+  box-shadow: 0 4px 18px -6px rgba(80,135,195,.15);
 }
 
 .dc-celeste-stripe {
@@ -1076,7 +1113,7 @@ section {
   font-family: var(--serif);
   font-size: 1.45rem;
   font-weight: 500;
-  color: #B0D8EF;
+  color: #2A6898;
   line-height: 1.2;
   margin-bottom: 8px;
 }
@@ -1090,7 +1127,7 @@ section {
 
 .dc-reserved-desc em {
   font-style: italic;
-  color: rgba(176,216,239,.65);
+  color: rgba(42,104,152,.7);
 }
 
 .dc-palette-label {
@@ -1171,11 +1208,11 @@ section {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  border: 1px solid var(--gold);
-  background: rgba(11,11,48,.88);
+  border: 1px solid rgba(90,155,210,.55);
+  background: rgba(220,238,252,.90);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 8px 26px -6px rgba(0,0,24,.75);
+  box-shadow: 0 8px 26px -6px rgba(60,120,180,.30);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1202,7 +1239,7 @@ section {
   position: absolute;
   inset: -1px;
   border-radius: 50%;
-  border: 1px solid var(--gold);
+  border: 1px solid rgba(90,155,210,.8);
   opacity: 0;
 }
 
@@ -1250,6 +1287,403 @@ section {
 }
 
 .audio-fab.is-playing .fab-play-icon { display: none; }
+
+/* ================================================================
+   ROSAS ESQUINAS — Corner bouquet decorations
+================================================================ */
+.roses-corner {
+  position: absolute;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.roses-tr {
+  top: 0;
+  right: 0;
+  width: 160px;
+  height: 185px;
+}
+
+.roses-bl {
+  bottom: 0;
+  left: 0;
+  width: 160px;
+  height: 185px;
+}
+
+.roses-br {
+  bottom: 0;
+  right: 0;
+  width: 155px;
+  height: 185px;
+}
+
+/* ================================================================
+   CLOCK — Reloj analógico + ramas botánicas
+================================================================ */
+.clock-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 32px auto 8px;
+  max-width: 320px;
+  position: relative;
+}
+
+.analog-clock-wrap {
+  flex-shrink: 0;
+  position: relative;
+}
+
+.analog-clock {
+  width: 180px;
+  height: 180px;
+  filter: drop-shadow(0 0 18px rgba(212,175,55,.22));
+  animation: clock-breathe 5s ease-in-out infinite;
+}
+
+@keyframes clock-breathe {
+  0%, 100% { filter: drop-shadow(0 0 14px rgba(80,150,210,.25)) drop-shadow(0 2px 8px rgba(100,160,220,.15)); }
+  50%       { filter: drop-shadow(0 0 22px rgba(80,150,210,.42)) drop-shadow(0 2px 12px rgba(100,160,220,.22)); }
+}
+
+.botanical-branch {
+  width: 64px;
+  height: 180px;
+  flex-shrink: 0;
+  opacity: .85;
+}
+
+.botanical-left  { transform: scaleX(1); }
+.botanical-right { transform: scaleX(1); }
+
+.countdown-faltan {
+  font-family: 'Great Vibes', 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.7rem, 7vw, 2.1rem);
+  color: #2B5080;
+  margin-bottom: 18px;
+  opacity: .85;
+  letter-spacing: .02em;
+}
+
+/* ================================================================
+   INTRO STORY — tres párrafos narrativos
+================================================================ */
+.story-q-open,
+.story-q-close {
+  font-family: var(--serif);
+  font-size: 3.5rem;
+  color: var(--gold);
+  line-height: 0;
+  vertical-align: -.5em;
+  display: inline-block;
+}
+
+.story-q-open {
+  float: left;
+  margin-right: .1em;
+  margin-top: .12em;
+}
+
+.story-q-close {
+  margin-left: .08em;
+}
+
+.intro-story {
+  text-align: left;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.story-para {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.05rem, 3.8vw, 1.22rem);
+  line-height: 1.9;
+  color: var(--silver);
+  margin-bottom: 1.6em;
+  text-align: justify;
+  hyphens: auto;
+}
+
+.story-para--closing {
+  margin-bottom: 0;
+  color: rgba(221,230,240,.95);
+}
+
+/* Override intro section padding for longer content */
+.intro {
+  padding-top: 56px;
+  padding-bottom: 56px;
+}
+
+/* ================================================================
+   PORTRAIT JEWEL ORNAMENT
+================================================================ */
+.portrait-jewel {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  width: 80px;
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px rgba(100,185,240,.55));
+  animation: jewel-pulse 3s ease-in-out infinite;
+}
+
+@keyframes jewel-pulse {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(100,185,240,.55)); }
+  50%       { filter: drop-shadow(0 0 14px rgba(100,185,240,.90)); }
+}
+
+/* ================================================================
+   PORTRAIT ROSES — Cluster de rosas bajo el retrato
+================================================================ */
+.portrait-roses {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 300px;
+  margin: -22px auto 10px;
+  pointer-events: none;
+}
+
+.portrait-rose-svg {
+  width: 100%;
+  height: auto;
+  animation: roses-breathe 5s ease-in-out infinite;
+}
+
+@keyframes roses-breathe {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50%       { transform: scale(1.012) translateY(-3px); }
+}
+
+/* ================================================================
+   DRESS CODE — Ilustraciones de vestimenta
+================================================================ */
+.dc-script-title {
+  font-family: 'Great Vibes', 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.4rem, 10vw, 3rem);
+  color: #1A2D5A;
+  line-height: 1;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 12px rgba(80,130,200,.18);
+}
+
+.dc-outfits {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 auto 36px;
+  max-width: 340px;
+}
+
+.dc-outfit-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.dc-outfit-svg {
+  width: 72px;
+  height: 90px;
+  filter: drop-shadow(0 3px 10px rgba(58,104,152,.18));
+  transition: transform .4s cubic-bezier(.22,.61,.36,1), filter .4s;
+}
+
+.dc-outfit-item:hover .dc-outfit-svg {
+  transform: translateY(-5px) scale(1.05);
+  filter: drop-shadow(0 8px 18px rgba(58,104,152,.28));
+}
+
+.dc-outfit-label {
+  font-family: var(--roman);
+  font-size: .5rem;
+  letter-spacing: .38em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding-left: .38em;
+}
+
+.dc-outfit-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0 8px;
+}
+
+.dc-formal-text {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.15rem, 4vw, 1.35rem);
+  color: #1A2D5A;
+  font-weight: 500;
+  letter-spacing: .02em;
+}
+
+/* ================================================================
+   DYNAMIC EFFECTS — Shimmer, float, glow, particles
+================================================================ */
+
+/* Shimmer sweep on portrait */
+.portrait-shimmer {
+  background: linear-gradient(
+    130deg,
+    transparent 30%,
+    rgba(255,255,255,.22) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: portrait-sweep 3.5s ease-in-out 2s infinite;
+}
+
+@keyframes portrait-sweep {
+  0%   { background-position: 200% 0; opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { background-position: -200% 0; opacity: 0; }
+}
+
+/* Floating gem pulse on dividers */
+.div-gem {
+  animation: gem-pulse 3s ease-in-out infinite;
+  display: inline-block;
+}
+.div-gem:last-child { animation-delay: 1.5s; }
+
+/* Card hover shimmer */
+.padrino-card {
+  overflow: hidden;
+}
+.padrino-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -75%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255,255,255,.22) 50%,
+    transparent 60%
+  );
+  transform: skewX(-20deg);
+  transition: left .6s ease;
+  pointer-events: none;
+}
+.padrino-card:hover::before {
+  left: 150%;
+}
+
+/* cd-cell sparkle glow on hover */
+.cd-cell {
+  transition: transform .35s cubic-bezier(.22,.61,.36,1), box-shadow .35s;
+}
+.cd-cell:hover {
+  transform: translateY(-4px) scale(1.06);
+  box-shadow: 0 10px 28px -8px rgba(58,104,152,.22);
+}
+
+/* Detalle-item hover lift */
+.detalle-item {
+  transition: background .3s;
+}
+.detalle-item:hover {
+  background: rgba(255,255,255,.28);
+}
+
+/* Floating animation for crown */
+.crown-wrap {
+  animation: crown-float 4s ease-in-out infinite;
+}
+
+/* Scroll line animated drop */
+.scroll-line::after {
+  animation: line-drop 1.8s cubic-bezier(.22,.61,.36,1) infinite;
+}
+
+/* Glitter sparkle burst on hero (CSS particles) */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.85) 1px, transparent 1px),
+    radial-gradient(circle, rgba(200,232,255,.7) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.65) 1.2px, transparent 1.2px);
+  background-size: 80px 80px, 120px 120px, 60px 60px;
+  background-position: 10px 20px, 40px 60px, 25px 45px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: .55;
+  animation: glitter-shift 8s linear infinite;
+}
+
+@keyframes glitter-shift {
+  0%   { background-position: 10px 20px, 40px 60px, 25px 45px; opacity: .55; }
+  50%  { opacity: .80; }
+  100% { background-position: 90px 100px, 160px 180px, 85px 125px; opacity: .55; }
+}
+
+/* Pulse glow on accept button */
+.accept-btn {
+  position: relative;
+  overflow: hidden;
+}
+.accept-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.25) 50%, transparent 60%);
+  transform: translateX(-100%);
+  transition: transform .7s ease;
+}
+.accept-btn:hover::after {
+  transform: translateX(200%);
+}
+
+/* Animated gradient border on maps-btn */
+.maps-btn {
+  position: relative;
+}
+
+/* Section reveal — enhanced with slight scale */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px) scale(.985);
+  transition: opacity .9s cubic-bezier(.22,.61,.36,1), transform .9s cubic-bezier(.22,.61,.36,1);
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Staggered reveal for padrino cards */
+.padrino-card:nth-child(1) { transition-delay: .0s; }
+.padrino-card:nth-child(2) { transition-delay: .12s; }
+.padrino-card:nth-child(3) { transition-delay: .24s; }
+
+/* Floating botanical branches */
+.botanical-branch {
+  animation: branch-float 6s ease-in-out infinite;
+}
+.botanical-right {
+  animation-delay: 3s;
+}
+
+@keyframes branch-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%       { transform: translateY(-6px) rotate(.8deg); }
+}
 
 /* ================================================================
    REDUCED MOTION
