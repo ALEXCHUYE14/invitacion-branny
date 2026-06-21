@@ -986,10 +986,110 @@ section {
 
 .accept-btn:active { transform: translateY(-1px); }
 
-.wa-icon {
-  width: 22px;
-  height: 22px;
+/* ── Estado: cargando ── */
+.accept-btn[data-state="loading"] {
+  opacity: .88;
+  cursor: not-allowed;
+  transform: none !important;
+  background: linear-gradient(135deg, #4A90C4 0%, #2C6898 50%, #1C4872 100%);
+}
+
+/* ── Estado: éxito ── */
+.accept-btn[data-state="success"] {
+  cursor: default;
+  transform: none !important;
+  background: linear-gradient(135deg, #3CC87A 0%, #24A05A 50%, #167840 100%);
+  box-shadow:
+    0 16px 36px -12px rgba(36,160,90,.55),
+    inset 0 1px 0 rgba(255,255,255,.30);
+}
+
+/* ── Estado: error (se auto-resetea a idle tras 3.5 s) ── */
+.accept-btn[data-state="error"] {
+  background: linear-gradient(135deg, #E05050 0%, #C02828 50%, #9A1818 100%);
+  box-shadow:
+    0 16px 36px -12px rgba(192,40,40,.55),
+    inset 0 1px 0 rgba(255,255,255,.18);
+  animation: shake .45s var(--ease) both;
+}
+
+/* ── Spinner (arco giratorio) ── */
+.btn-spinner {
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
+  animation: btn-spin .85s linear infinite;
+}
+
+@keyframes btn-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Check de éxito ── */
+.btn-check {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.btn-text {
+  flex: 1;
+  text-align: center;
+}
+
+/* ── Panel de éxito ── */
+.confirm-success {
+  margin-top: 28px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(60,200,120,.28);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 32px -8px rgba(36,160,90,.18);
+  animation: panel-rise .65s cubic-bezier(.22,.61,.36,1) both;
+}
+
+@keyframes panel-rise {
+  from { opacity: 0; transform: translateY(22px) scale(.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+.confirm-success-inner {
+  padding: 34px 28px 30px;
+  text-align: center;
+}
+
+.confirm-success-star {
+  font-size: 2.2rem;
+  color: rgba(212,175,55,.90);
+  text-shadow: 0 0 24px rgba(212,175,55,.55);
+  margin-bottom: 12px;
+  animation: gem-pulse 2.5s ease-in-out infinite;
+}
+
+.confirm-success-title {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.5rem;
+  color: var(--gold-lit);
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+
+.confirm-success-body {
+  font-family: var(--sans);
+  font-size: .87rem;
+  color: var(--silver);
+  line-height: 1.85;
+}
+
+.confirm-success-body strong {
+  font-family: var(--roman);
+  font-weight: 600;
+  color: var(--gold-lit);
+  letter-spacing: .04em;
 }
 
 /* ================================================================
@@ -1807,6 +1907,52 @@ section {
 @keyframes branch-float {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50%       { transform: translateY(-6px) rotate(.8deg); }
+}
+
+/* ================================================================
+   RESPONSIVIDAD MÓVIL — Footer & rosas en pantallas pequeñas
+================================================================ */
+
+/* En móviles muy estrechos las rosas de esquina inferior se reducen
+   para que no obstruyan el bloque de créditos del desarrollador.
+   El footer ya tiene z-index: 4 (> rosas z-index: 3) así que el
+   texto siempre queda visible; estas reglas añaden margen visual. */
+@media (max-width: 420px) {
+  .roses-bl,
+  .roses-br {
+    width:   100px;
+    height:  125px;
+    opacity: .35;        /* más translúcido en móvil */
+  }
+
+  .footer {
+    padding-bottom: 56px;
+  }
+
+  .footer-dev {
+    padding-left:  14px;
+    padding-right: 14px;
+  }
+
+  .dev-name {
+    font-size:       .74rem;
+    letter-spacing:  .07em;
+    line-height:     1.9;
+  }
+
+  .dev-tagline {
+    font-size: .63rem;
+  }
+}
+
+/* Pantallas entre 421 y 540 px: rosas ligeramente más pequeñas */
+@media (min-width: 421px) and (max-width: 540px) {
+  .roses-bl,
+  .roses-br {
+    width:   125px;
+    height:  150px;
+    opacity: .45;
+  }
 }
 
 /* ================================================================

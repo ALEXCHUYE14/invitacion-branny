@@ -938,25 +938,38 @@
 
     </div>
 
-    <!-- Botón WhatsApp -->
-    <button class="accept-btn" id="acceptBtn" type="button">
-      <svg class="wa-icon" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
-        <path d="M16 0C7.164 0 0 7.163 0 16c0 2.85.748 5.526 2.05 7.855L0 32l8.35-2.022A15.95
-                 15.95 0 0 0 16 32c8.836 0 16-7.164 16-16S24.836 0 16 0zm0 29.25c-2.64
-                 0-5.118-.71-7.24-1.946l-.52-.308-5.386 1.303 1.337-5.236-.34-.543A13.22
-                 13.22 0 0 1 2.75 16C2.75 8.683 8.684 2.75 16 2.75S29.25 8.683 29.25
-                 16 23.316 29.25 16 29.25zm7.206-9.918c-.394-.197-2.332-1.147-2.694-1.278
-                 -.362-.13-.625-.196-.888.197s-1.02 1.278-1.25 1.54c-.23.263-.46.296-.854.099
-                 -.394-.197-1.663-.611-3.167-1.948-1.17-1.04-1.96-2.325-2.19-2.718-.23-.394
-                 -.025-.607.172-.803.178-.176.394-.46.591-.69.197-.23.263-.394.394-.657.131
-                 -.263.066-.493-.033-.69-.099-.197-.888-2.135-1.217-2.923-.32-.768-.647-.664
-                 -.888-.676l-.756-.013c-.263 0-.69.099-1.052.493-.362.394-1.382 1.35-1.382
-                 3.29s1.415 3.816 1.612 4.079c.197.263 2.783 4.247 6.74 5.953.942.407
-                 1.677.65 2.25.832.946.3 1.806.258 2.487.156.758-.114 2.332-.952
-                 2.66-1.873.329-.921.329-1.711.23-1.873-.098-.164-.362-.263-.756-.46z"/>
+    <!-- Botón de confirmación con estados: idle / loading / success / error -->
+    <button class="accept-btn" id="acceptBtn" type="button" data-state="idle">
+
+      <!-- Spinner (visible solo en estado "loading") -->
+      <svg id="btnSpinner" class="btn-spinner" hidden viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" stroke-opacity=".25"/>
+        <path d="M12 3 A9 9 0 0 1 21 12"/>
       </svg>
-      Aceptar Invitación
+
+      <!-- Check (visible solo en estado "success") -->
+      <svg id="btnCheck" class="btn-check" hidden viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+
+      <span id="btnText" class="btn-text">Aceptar Invitación</span>
     </button>
+
+    <!-- Panel de confirmación visual (oculto; se muestra tras el éxito) -->
+    <div class="confirm-success" id="confirmSuccess" hidden role="status" aria-live="polite">
+      <div class="confirm-success-inner">
+        <p class="confirm-success-star" aria-hidden="true">✦</p>
+        <p class="confirm-success-title">¡Tu lugar está reservado!</p>
+        <p class="confirm-success-body">
+          Gracias, <strong id="successGuestName"></strong>.<br>
+          Te esperamos el <em>Viernes 10 de Julio · 8:00 p.m.</em><br>
+          en Gaetano — Sullana.&nbsp;&nbsp;✨
+        </p>
+      </div>
+    </div>
+
   </section>
 
 

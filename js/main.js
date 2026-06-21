@@ -5,7 +5,6 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 var CFG = {
   audioSrc:  "audio/cenicienta.mp3",
-  whatsapp:  "51950729460",
   eventDate: "2026-07-10T20:00:00-05:00",
   mapsQuery: "Gaetano Sullana Piura Perú",
   sheetsUrl: "https://script.google.com/macros/s/AKfycbw0zONZALbHB7Ax0Z6MRsE2teIXTR3ityE33m9XDmZS5rQgP7U2-5xOlwv5t0YtrnncZQ/exec"
@@ -169,100 +168,130 @@ var CFG = {
 }());
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   CONFIRMACIÓN POR WHATSAPP + GOOGLE SHEETS
+   CONFIRMACIÓN DE ASISTENCIA → Google Sheets
+   Máquina de estados: idle | loading | success | error
+   Sin WhatsApp. Previene envíos duplicados.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 (function initConfirm() {
-  var inpName  = document.getElementById("guestName");
-  var inpDni   = document.getElementById("guestDni");
-  var inpCel   = document.getElementById("guestCel");
-  var wrapName = document.getElementById("fieldWrapName");
-  var wrapDni  = document.getElementById("fieldWrapDni");
-  var wrapCel  = document.getElementById("fieldWrapCel");
-  var errName  = document.getElementById("fieldErrorName");
-  var errDni   = document.getElementById("fieldErrorDni");
-  var errCel   = document.getElementById("fieldErrorCel");
-  var acceptEl = document.getElementById("acceptBtn");
+  var inpName      = document.getElementById("guestName");
+  var inpDni       = document.getElementById("guestDni");
+  var inpCel       = document.getElementById("guestCel");
+  var wrapName     = document.getElementById("fieldWrapName");
+  var wrapDni      = document.getElementById("fieldWrapDni");
+  var wrapCel      = document.getElementById("fieldWrapCel");
+  var errName      = document.getElementById("fieldErrorName");
+  var errDni       = document.getElementById("fieldErrorDni");
+  var errCel       = document.getElementById("fieldErrorCel");
+  var acceptEl     = document.getElementById("acceptBtn");
+  var elBtnText    = document.getElementById("btnText");
+  var elSpinner    = document.getElementById("btnSpinner");
+  var elCheck      = document.getElementById("btnCheck");
+  var elSuccess    = document.getElementById("confirmSuccess");
+  var elSuccessName = document.getElementById("successGuestName");
 
   if (!inpName || !inpDni || !inpCel || !acceptEl) return;
 
-  function showError(wrap, errEl, msg) {
+  /* ── Máquina de estados UI ────────────────────────── */
+  var uiState = "idle"; // idle | loading | success | error
+
+  var BTN_LABELS = {
+    idle:    "Aceptar Invitación",
+    loading: "Confirmando…",
+    success: "¡Asistencia Confirmada! ✦",
+    error:   "Sin conexión — Intenta de nuevo"
+  };
+
+  function setUiState(state) {
+    uiState = state;
+    acceptEl.disabled      = (state === "loading" || state === "success");
+    acceptEl.dataset.state = state;
+
+    if (elBtnText)  { elBtnText.textContent = BTN_LABELS[state]; }
+    if (elSpinner)  { elSpinner.hidden       = (state !== "loading"); }
+    if (elCheck)    { elCheck.hidden         = (state !== "success"); }
+  }
+
+  /* ── Helpers de validación ───────────────────────── */
+  function showFieldError(wrap, errEl, msg) {
     wrap.classList.add("has-error");
     errEl.textContent = msg;
   }
 
-  function clearError(wrap, errEl) {
+  function clearFieldError(wrap, errEl) {
     wrap.classList.remove("has-error");
     errEl.textContent = "";
   }
 
-  function sendToSheets(name, dni, cel) {
-    if (!CFG.sheetsUrl) return;
+  function clearAllErrors() {
+    clearFieldError(wrapName, errName);
+    clearFieldError(wrapDni,  errDni);
+    clearFieldError(wrapCel,  errCel);
+  }
+
+  function validate(name, dni, cel) {
+    if (!name) {
+      showFieldError(wrapName, errName, "Por favor escribe tu nombre completo.");
+      inpName.focus();
+      return false;
+    }
+    if (dni.length !== 8) {
+      showFieldError(wrapDni, errDni, "El DNI debe tener exactamente 8 dígitos.");
+      inpDni.focus();
+      return false;
+    }
+    if (cel.replace(/\D/g, "").length < 7) {
+      showFieldError(wrapCel, errCel, "Ingresa un número de celular válido.");
+      inpCel.focus();
+      return false;
+    }
+    return true;
+  }
+
+  /* ── Registro asíncrono en Google Sheets ─────────── */
+  /* no-cors → respuesta opaca (status 0).
+     fetch() sólo rechaza ante fallo de red real (sin conexión).
+     Por eso el catch captura únicamente errores de red genuinos. */
+  function postToSheets(name, dni, cel) {
+    if (!CFG.sheetsUrl) { return Promise.resolve(); }
     var body = new URLSearchParams({ nombre: name, dni: dni, celular: cel });
-    fetch(CFG.sheetsUrl, { method: "POST", mode: "no-cors", body: body })
-      .catch(function() {});
+    return fetch(CFG.sheetsUrl, { method: "POST", mode: "no-cors", body: body });
   }
 
-  /* Abre WhatsApp de forma fiable en móvil y escritorio.
-     Usa un <a> temporal para evitar el bloqueador de popups
-     ya que window.open con features string puede bloquearse en iOS/Android. */
-  function openWhatsApp(url) {
-    var a = document.createElement("a");
-    a.href = url;
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
-    a.style.cssText = "position:fixed;left:-9999px;top:-9999px;";
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function() {
-      if (document.body.contains(a)) { document.body.removeChild(a); }
-    }, 500);
-  }
-
+  /* ── Flujo principal ─────────────────────────────── */
   function validateAndSend() {
+    if (uiState !== "idle") { return; } /* bloquea doble envío */
+
     var name = inpName.value.trim();
     var dni  = inpDni.value.replace(/\D/g, "");
     var cel  = inpCel.value.trim();
 
-    clearError(wrapName, errName);
-    clearError(wrapDni,  errDni);
-    clearError(wrapCel,  errCel);
+    clearAllErrors();
+    if (!validate(name, dni, cel)) { return; }
 
-    if (!name) {
-      showError(wrapName, errName, "Por favor escribe tu nombre completo.");
-      inpName.focus();
-      return;
-    }
-    if (dni.length !== 8) {
-      showError(wrapDni, errDni, "El DNI debe tener exactamente 8 dígitos.");
-      inpDni.focus();
-      return;
-    }
-    if (cel.replace(/\D/g, "").length < 7) {
-      showError(wrapCel, errCel, "Ingresa un número de celular válido.");
-      inpCel.focus();
-      return;
-    }
+    setUiState("loading");
 
-    /* 1. Registrar en Google Sheets (fire & forget — no-cors no retorna datos útiles) */
-    sendToSheets(name, dni, cel);
+    postToSheets(name, dni, cel)
+      .then(function() {
+        /* Éxito: registro enviado a Google Sheets */
+        setUiState("success");
 
-    /* 2. Abrir WhatsApp inmediatamente desde el mismo hilo de eventos del click
-          para que el navegador no lo trate como popup no solicitado.
-          Se usa \n en el mensaje: encodeURIComponent lo convierte en %0A,
-          que WhatsApp interpreta como salto de línea. */
-    var mensaje =
-      "Hola 👑 Confirmo mi asistencia a los XV Años de Branny Sayumi 🎀\n" +
-      "─────────────────────────\n" +
-      "👤 Nombre : " + name + "\n" +
-      "🪪 DNI    : " + dni  + "\n" +
-      "📱 Celular: " + cel  + "\n" +
-      "─────────────────────────\n" +
-      "¡Estaré presente en tan especial celebración! ✨";
-
-    var waUrl = "https://wa.me/" + CFG.whatsapp + "?text=" + encodeURIComponent(mensaje);
-    openWhatsApp(waUrl);
+        /* Mostrar panel de confirmación con el nombre del invitado */
+        if (elSuccessName) { elSuccessName.textContent = name; }
+        if (elSuccess) {
+          elSuccess.hidden = false;
+          setTimeout(function() {
+            elSuccess.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          }, 80);
+        }
+      })
+      .catch(function() {
+        /* Error de red (sin conexión). Auto-reset a idle tras 3.5 s */
+        setUiState("error");
+        setTimeout(function() { setUiState("idle"); }, 3500);
+      });
   }
 
+  /* ── Event listeners ─────────────────────────────── */
   acceptEl.addEventListener("click", validateAndSend);
 
   inpName.addEventListener("keydown", function(e) {
@@ -272,13 +301,14 @@ var CFG = {
     if (e.key === "Enter") { e.preventDefault(); inpCel.focus(); }
   });
   inpCel.addEventListener("keydown", function(e) {
-    if (e.key === "Enter") validateAndSend();
+    if (e.key === "Enter") { validateAndSend(); }
   });
 
-  [[inpName, wrapName, errName], [inpDni, wrapDni, errDni], [inpCel, wrapCel, errCel]]
-    .forEach(function(t) {
-      t[0].addEventListener("input", function() { clearError(t[1], t[2]); });
-    });
+  [[inpName, wrapName, errName],
+   [inpDni,  wrapDni,  errDni],
+   [inpCel,  wrapCel,  errCel]].forEach(function(t) {
+    t[0].addEventListener("input", function() { clearFieldError(t[1], t[2]); });
+  });
 }());
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
