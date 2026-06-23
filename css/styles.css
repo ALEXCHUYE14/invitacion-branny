@@ -1764,16 +1764,20 @@ section {
   flex: 1;
 }
 
-.dc-outfit-svg {
-  width: 72px;
-  height: 90px;
-  filter: drop-shadow(0 3px 10px rgba(58,104,152,.18));
+.dc-outfit-img {
+  width: 90px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  /* multiply elimina el fondo blanco/claro fusionándolo con el fondo de la tarjeta */
+  mix-blend-mode: multiply;
+  filter: drop-shadow(0 4px 14px rgba(58,104,152,.22));
   transition: transform .4s cubic-bezier(.22,.61,.36,1), filter .4s;
 }
 
-.dc-outfit-item:hover .dc-outfit-svg {
-  transform: translateY(-5px) scale(1.05);
-  filter: drop-shadow(0 8px 18px rgba(58,104,152,.28));
+.dc-outfit-item:hover .dc-outfit-img {
+  transform: translateY(-6px) scale(1.06);
+  filter: drop-shadow(0 10px 22px rgba(58,104,152,.32));
 }
 
 .dc-outfit-label {
