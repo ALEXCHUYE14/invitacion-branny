@@ -1597,6 +1597,21 @@ section {
 }
 
 /* ================================================================
+   PORTRAIT FRAME — marco-espejo.png overlay
+================================================================ */
+.portrait-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 108%;
+  height: auto;
+  pointer-events: none;
+  z-index: 4;
+  display: block;
+}
+
+/* ================================================================
    PORTRAIT JEWEL ORNAMENT
 ================================================================ */
 .portrait-jewel {
