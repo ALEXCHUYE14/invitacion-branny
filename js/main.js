@@ -183,32 +183,20 @@ var CFG = {
   var errDni       = document.getElementById("fieldErrorDni");
   var errCel       = document.getElementById("fieldErrorCel");
   var acceptEl     = document.getElementById("acceptBtn");
-  var elBtnText    = document.getElementById("btnText");
-  var elSpinner    = document.getElementById("btnSpinner");
-  var elCheck      = document.getElementById("btnCheck");
-  var elSuccess    = document.getElementById("confirmSuccess");
+  var elSuccess     = document.getElementById("confirmSuccess");
   var elSuccessName = document.getElementById("successGuestName");
 
   if (!inpName || !inpDni || !inpCel || !acceptEl) return;
 
-  /* ── Máquina de estados UI ────────────────────────── */
-  var uiState = "idle"; // idle | loading | success | error
-
-  var BTN_LABELS = {
-    idle:    "Aceptar Invitación",
-    loading: "Confirmando…",
-    success: "¡Asistencia Confirmada! ✦",
-    error:   "Sin conexión — Intenta de nuevo"
-  };
+  /* ── Máquina de estados: idle | loading | success | error ── */
+  var uiState = "idle";
 
   function setUiState(state) {
     uiState = state;
+    /* El botón sólo se deshabilita durante loading y success para
+       evitar doble envío; el texto permanece siempre igual. */
     acceptEl.disabled      = (state === "loading" || state === "success");
     acceptEl.dataset.state = state;
-
-    if (elBtnText)  { elBtnText.textContent = BTN_LABELS[state]; }
-    if (elSpinner)  { elSpinner.hidden       = (state !== "loading"); }
-    if (elCheck)    { elCheck.hidden         = (state !== "success"); }
   }
 
   /* ── Helpers de validación ───────────────────────── */
