@@ -265,6 +265,16 @@ section {
   text-align: center;
   position: relative;
   overflow: hidden;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(238, 248, 253, 0.72) 0%,
+      rgba(210, 235, 250, 0.60) 50%,
+      rgba(200, 228, 250, 0.70) 100%
+    ),
+    url('../img/fondo.png');
+  background-size: cover;
+  background-position: center center;
 }
 
 .hero::before {
