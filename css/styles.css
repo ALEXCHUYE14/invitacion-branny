@@ -535,10 +535,14 @@ section {
    COUNTDOWN
 ================================================================ */
 .countdown {
-  background: linear-gradient(180deg,
-    rgba(255,255,255,.32),
-    rgba(255,255,255,.50),
-    rgba(255,255,255,.32));
+  background-image:
+    linear-gradient(180deg,
+      rgba(255,255,255,.58),
+      rgba(255,255,255,.72),
+      rgba(255,255,255,.58)),
+    url('../img/fondo-medio.jpeg');
+  background-size: cover;
+  background-position: center;
   border-top: 1px solid rgba(135,195,230,.35);
   border-bottom: 1px solid rgba(135,195,230,.35);
 }
@@ -713,6 +717,14 @@ section {
   margin-bottom: 10px;
   display: block;
   line-height: 1;
+}
+
+.padrino-icon-img {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 
 .padrino-label {
@@ -1085,10 +1097,14 @@ section {
 .footer {
   padding: 56px 36px 80px;
   text-align: center;
-  background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(180,218,242,.55));
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,.55), rgba(180,218,242,.72)),
+    url('../img/fondo-final.png');
+  background-size: cover;
+  background-position: center;
   border-top: 1px solid rgba(100,165,215,.30);
   position: relative;
-  z-index: 4;          /* encima de .roses-corner (z-index:3) */
+  z-index: 4;
 }
 
 .footer-mono {
