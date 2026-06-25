@@ -94,6 +94,19 @@
       transition: transform 6s linear;
     }
     #dupToast.toast-show .toast-progress { transform: scaleX(0); }
+
+    /* ── QR Ridu Joyería en card de padrinos ── */
+    .padrino-qr {
+      display: block;
+      width: 130px;
+      height: 130px;
+      margin: 10px auto 0;
+      object-fit: contain;
+      border-radius: 8px;
+      border: 1.5px solid rgba(58,104,152,.25);
+      background: rgba(255,255,255,.60);
+      padding: 4px;
+    }
   </style>
 </head>
 <body>
@@ -458,7 +471,7 @@
       </p>
       <p class="family-amp" aria-hidden="true">&amp;</p>
       <p class="family-name">
-        Liz Jaquelline<br>
+        Liz yaquelline<br>
         <span>Sotomayor Nieves</span>
       </p>
     </div>
@@ -500,8 +513,7 @@
         </span>
         <span class="padrino-label">Padrinos de Joyas</span>
         <p class="padrino-brand">Ridu Joyería</p>
-        <p class="padrino-name">Richard Durand Gonzales</p>
-        <span class="padrino-amp" aria-hidden="true">&amp; Esposa</span>
+        <img src="img/qr.png" alt="Código QR Ridu Joyería" class="padrino-qr" />
       </div>
 
       <!-- Padrinos Maquillaje y Zapatos -->
@@ -563,6 +575,23 @@
         <p class="detalle-key">Lugar</p>
         <p class="detalle-val">Gaetano — Sullana</p>
         <p class="detalle-sub">Frente al Colegio Miguel Cortés de Sullana</p>
+      </div>
+
+      <div class="detalle-sep" aria-hidden="true"></div>
+
+      <div class="detalle-item">
+        <span class="detalle-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+               stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="2" x2="12" y2="8"/>
+            <line x1="9"  y1="5" x2="15" y2="5"/>
+            <rect x="4"   y="8" width="16" height="14" rx="1"/>
+            <path d="M9 22 L9 16 Q12 12.5 15 16 L15 22"/>
+          </svg>
+        </span>
+        <p class="detalle-key">Santa Misa</p>
+        <p class="detalle-val">Iglesia del Tránsito</p>
+        <p class="detalle-sub">Viernes 17 de Julio &nbsp;·&nbsp; 6:00 p.m.</p>
       </div>
 
     </div>
