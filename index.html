@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#07071E" />
   <title>Branny Sayumi · Mis XV Años</title>
-  <meta name="description" content="Invitación a los XV Años de Branny Sayumi Curay Sotomayor — Viernes 10 de julio de 2026, Gaetano, Sullana." />
+  <meta name="description" content="Invitación a los XV Años de Branny Sayumi Curay Sotomayor — Viernes 17 de julio de 2026, Gaetano, Sullana." />
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,6 +17,84 @@
   <link rel="manifest" href="/site.webmanifest">
   <!-- Styles -->
   <link rel="stylesheet" href="css/styles.css" />
+
+  <style>
+    /* ── Toast de invitado ya registrado ── */
+    #dupToast {
+      position: fixed;
+      top: -180px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      width: min(90vw, 420px);
+      background: linear-gradient(145deg, rgba(220,240,255,.97) 0%, rgba(200,228,252,.97) 100%);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(100,165,220,.45);
+      border-radius: 16px;
+      box-shadow:
+        0 8px 32px rgba(40,90,150,.22),
+        0 0 0 1px rgba(255,255,255,.55) inset,
+        0 1px 0 rgba(255,255,255,.70) inset;
+      padding: 22px 24px 20px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      transition: top .52s cubic-bezier(.22,.61,.36,1), opacity .52s ease;
+      opacity: 0;
+    }
+    #dupToast.toast-show {
+      top: 20px;
+      opacity: 1;
+    }
+    .toast-gem {
+      flex-shrink: 0;
+      font-size: 1.5rem;
+      line-height: 1;
+      margin-top: 2px;
+    }
+    .toast-body { flex: 1; }
+    .toast-title {
+      font-family: 'Cinzel', serif;
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #1A3060;
+      margin-bottom: 6px;
+    }
+    .toast-msg {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #2B4A7A;
+    }
+    .toast-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #5A8BB0;
+      font-size: 1.1rem;
+      padding: 0 0 0 6px;
+      line-height: 1;
+      flex-shrink: 0;
+      opacity: .75;
+      transition: opacity .2s;
+    }
+    .toast-close:hover { opacity: 1; }
+    .toast-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      border-radius: 0 0 16px 16px;
+      background: linear-gradient(90deg, #5A9FD4, #3A6898);
+      width: 100%;
+      transform-origin: left;
+      transform: scaleX(1);
+      transition: transform 6s linear;
+    }
+    #dupToast.toast-show .toast-progress { transform: scaleX(0); }
+  </style>
 </head>
 <body>
 
@@ -335,7 +413,7 @@
       </div>
     </div>
 
-    <p class="countdown-date">Viernes 10 de Julio · 2026 · 8:00 p.m.</p>
+    <p class="countdown-date">Viernes 17 de Julio · 2026 · 8:00 p.m.</p>
   </section>
 
 
@@ -380,7 +458,7 @@
       </p>
       <p class="family-amp" aria-hidden="true">&amp;</p>
       <p class="family-name">
-        Liz Jaqueline<br>
+        Liz Jaquelline<br>
         <span>Sotomayor Nieves</span>
       </p>
     </div>
@@ -417,7 +495,9 @@
 
       <!-- Padrinos de Joyas -->
       <div class="padrino-card featured">
-        <span class="padrino-icon" aria-hidden="true">💎</span>
+        <span class="padrino-icon" aria-hidden="true">
+          <img src="img/diamante.png" alt="" class="padrino-icon-img" />
+        </span>
         <span class="padrino-label">Padrinos de Joyas</span>
         <p class="padrino-brand">Ridu Joyería</p>
         <p class="padrino-name">Richard Durand Gonzales</p>
@@ -466,7 +546,7 @@
           </svg>
         </span>
         <p class="detalle-key">Fecha y Hora</p>
-        <p class="detalle-val">Viernes 10 de Julio</p>
+        <p class="detalle-val">Viernes 17 de Julio</p>
         <p class="detalle-sub">2026 &nbsp;·&nbsp; 8:00 p.m.</p>
       </div>
 
@@ -638,7 +718,7 @@
         <p class="confirm-success-title">¡Tu lugar está reservado!</p>
         <p class="confirm-success-body">
           Gracias, <strong id="successGuestName"></strong>.<br>
-          Te esperamos el <em>Viernes 10 de Julio · 8:00 p.m.</em><br>
+          Te esperamos el <em>Viernes 17 de Julio · 8:00 p.m.</em><br>
           en Gaetano — Sullana.&nbsp;&nbsp;✨
         </p>
       </div>
@@ -653,7 +733,7 @@
     <p class="footer-mono">XV</p>
     <div class="footer-rule" aria-hidden="true"></div>
     <p class="footer-name">Branny Sayumi Curay Sotomayor</p>
-    <p class="footer-date">10 · 07 · 2026 — Sullana, Piura</p>
+    <p class="footer-date">17 · 07 · 2026 — Sullana, Piura</p>
     <p class="footer-magic" aria-hidden="true">✦ &nbsp; La magia comienza a las 8 de la noche &nbsp; ✦</p>
 
     <!-- Firma del desarrollador -->
@@ -688,6 +768,17 @@
   </svg>
 </button>
 
+
+<!-- ═══════════════ TOAST — INVITADO YA REGISTRADO ═══════════════ -->
+<div id="dupToast" role="alert" aria-live="assertive" aria-atomic="true">
+  <span class="toast-gem" aria-hidden="true">✦</span>
+  <div class="toast-body">
+    <p class="toast-title">Ya estás en nuestra lista</p>
+    <p class="toast-msg">¡Hola! Detectamos que ya te encuentras registrado en nuestra lista de invitados. No es necesario que te registres de nuevo, ¡estamos ansiosos por verte!</p>
+  </div>
+  <button class="toast-close" id="dupToastClose" aria-label="Cerrar aviso">✕</button>
+  <div class="toast-progress" id="dupToastProgress"></div>
+</div>
 
 <script src="js/main.js"></script>
 </body>

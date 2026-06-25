@@ -5,7 +5,7 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 var CFG = {
   audioSrc:  "audio/cenicienta.mp3",
-  eventDate: "2026-07-10T20:00:00-05:00",
+  eventDate: "2026-07-17T20:00:00-05:00",
   mapsQuery: "Gaetano Sullana Piura Perú",
   sheetsUrl: "https://script.google.com/macros/s/AKfycbw0zONZALbHB7Ax0Z6MRsE2teIXTR3ityE33m9XDmZS5rQgP7U2-5xOlwv5t0YtrnncZQ/exec"
 };
@@ -168,34 +168,76 @@ var CFG = {
 }());
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TOAST — INVITADO YA REGISTRADO
+   Controlado desde initConfirm. No depende de librerías.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+var Toast = (function() {
+  var el       = document.getElementById("dupToast");
+  var closeBtn = document.getElementById("dupToastClose");
+  var timerId  = null;
+
+  function hide() {
+    if (!el) return;
+    el.classList.remove("toast-show");
+    clearTimeout(timerId);
+    timerId = null;
+  }
+
+  function show() {
+    if (!el) return;
+    clearTimeout(timerId);
+    el.classList.add("toast-show");
+    /* Auto-cierre a los 6 s */
+    timerId = setTimeout(hide, 6000);
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", hide);
+  }
+
+  return { show: show, hide: hide };
+}());
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    CONFIRMACIÓN DE ASISTENCIA → Google Sheets
    Máquina de estados: idle | loading | success | error
-   Sin WhatsApp. Previene envíos duplicados.
+   Anti-duplicados: capa 1 localStorage, capa 2 GET Sheets.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 (function initConfirm() {
-  var inpName      = document.getElementById("guestName");
-  var inpDni       = document.getElementById("guestDni");
-  var inpCel       = document.getElementById("guestCel");
-  var wrapName     = document.getElementById("fieldWrapName");
-  var wrapDni      = document.getElementById("fieldWrapDni");
-  var wrapCel      = document.getElementById("fieldWrapCel");
-  var errName      = document.getElementById("fieldErrorName");
-  var errDni       = document.getElementById("fieldErrorDni");
-  var errCel       = document.getElementById("fieldErrorCel");
-  var acceptEl     = document.getElementById("acceptBtn");
+  var inpName       = document.getElementById("guestName");
+  var inpDni        = document.getElementById("guestDni");
+  var inpCel        = document.getElementById("guestCel");
+  var wrapName      = document.getElementById("fieldWrapName");
+  var wrapDni       = document.getElementById("fieldWrapDni");
+  var wrapCel       = document.getElementById("fieldWrapCel");
+  var errName       = document.getElementById("fieldErrorName");
+  var errDni        = document.getElementById("fieldErrorDni");
+  var errCel        = document.getElementById("fieldErrorCel");
+  var acceptEl      = document.getElementById("acceptBtn");
   var elSuccess     = document.getElementById("confirmSuccess");
   var elSuccessName = document.getElementById("successGuestName");
 
   if (!inpName || !inpDni || !inpCel || !acceptEl) return;
 
-  /* ── Máquina de estados: idle | loading | success | error ── */
+  /* ── Clave de localStorage ───────────────────────── */
+  var LS_PREFIX = "branny_guest_";
+
+  function lsIsRegistered(dni) {
+    try { return !!localStorage.getItem(LS_PREFIX + dni); }
+    catch (e) { return false; }
+  }
+
+  function lsSaveRegistered(dni) {
+    try { localStorage.setItem(LS_PREFIX + dni, "1"); }
+    catch (e) { /* cuotas llenas o modo privado — ignorar silenciosamente */ }
+  }
+
+  /* ── Máquina de estados: idle | checking | loading | success | error ── */
   var uiState = "idle";
 
   function setUiState(state) {
     uiState = state;
-    /* El botón sólo se deshabilita durante loading y success para
-       evitar doble envío; el texto permanece siempre igual. */
-    acceptEl.disabled      = (state === "loading" || state === "success");
+    acceptEl.disabled      = (state !== "idle");
     acceptEl.dataset.state = state;
   }
 
@@ -217,37 +259,65 @@ var CFG = {
   }
 
   function validate(name, dni, cel) {
+    var ok = true;
     if (!name) {
       showFieldError(wrapName, errName, "Por favor escribe tu nombre completo.");
-      inpName.focus();
-      return false;
+      if (ok) { inpName.focus(); ok = false; }
     }
     if (dni.length !== 8) {
       showFieldError(wrapDni, errDni, "El DNI debe tener exactamente 8 dígitos.");
-      inpDni.focus();
-      return false;
+      if (ok) { inpDni.focus(); ok = false; }
     }
     if (cel.replace(/\D/g, "").length < 7) {
       showFieldError(wrapCel, errCel, "Ingresa un número de celular válido.");
-      inpCel.focus();
-      return false;
+      if (ok) { inpCel.focus(); ok = false; }
     }
-    return true;
+    return ok;
+  }
+
+  /* ── Verificación contra Sheets (GET, con timeout) ── */
+  function checkDuplicateRemote(dni) {
+    if (!CFG.sheetsUrl) { return Promise.resolve(false); }
+    var url = CFG.sheetsUrl + "?action=check&dni=" + encodeURIComponent(dni);
+    var controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+    var timeout = controller
+      ? setTimeout(function() { controller.abort(); }, 5000)
+      : null;
+    return fetch(url, controller ? { signal: controller.signal } : {})
+      .then(function(res) {
+        clearTimeout(timeout);
+        return res.json();
+      })
+      .then(function(data) {
+        return data && data.exists === true;
+      })
+      .catch(function() {
+        clearTimeout(timeout);
+        return false; /* ante error de red, dejamos pasar (fail open) */
+      });
   }
 
   /* ── Registro asíncrono en Google Sheets ─────────── */
-  /* no-cors → respuesta opaca (status 0).
-     fetch() sólo rechaza ante fallo de red real (sin conexión).
-     Por eso el catch captura únicamente errores de red genuinos. */
   function postToSheets(name, dni, cel) {
     if (!CFG.sheetsUrl) { return Promise.resolve(); }
     var body = new URLSearchParams({ nombre: name, dni: dni, celular: cel });
     return fetch(CFG.sheetsUrl, { method: "POST", mode: "no-cors", body: body });
   }
 
+  /* ── Mostrar panel de éxito ──────────────────────── */
+  function showSuccess(name) {
+    if (elSuccessName) { elSuccessName.textContent = name; }
+    if (elSuccess) {
+      elSuccess.hidden = false;
+      setTimeout(function() {
+        elSuccess.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }, 80);
+    }
+  }
+
   /* ── Flujo principal ─────────────────────────────── */
   function validateAndSend() {
-    if (uiState !== "idle") { return; } /* bloquea doble envío */
+    if (uiState !== "idle") { return; }
 
     var name = inpName.value.trim();
     var dni  = inpDni.value.replace(/\D/g, "");
@@ -256,26 +326,37 @@ var CFG = {
     clearAllErrors();
     if (!validate(name, dni, cel)) { return; }
 
-    setUiState("loading");
+    /* Capa 1: localStorage (mismo dispositivo) — respuesta inmediata */
+    if (lsIsRegistered(dni)) {
+      Toast.show();
+      return;
+    }
 
-    postToSheets(name, dni, cel)
-      .then(function() {
-        /* Éxito: registro enviado a Google Sheets */
-        setUiState("success");
+    /* Capa 2: verificar contra Sheets (cross-device) */
+    setUiState("checking");
 
-        /* Mostrar panel de confirmación con el nombre del invitado */
-        if (elSuccessName) { elSuccessName.textContent = name; }
-        if (elSuccess) {
-          elSuccess.hidden = false;
-          setTimeout(function() {
-            elSuccess.scrollIntoView({ behavior: "smooth", block: "nearest" });
-          }, 80);
+    checkDuplicateRemote(dni)
+      .then(function(isDuplicate) {
+        if (isDuplicate) {
+          setUiState("idle");
+          lsSaveRegistered(dni); /* sincronizar localStorage */
+          Toast.show();
+          return;
         }
-      })
-      .catch(function() {
-        /* Error de red (sin conexión). Auto-reset a idle tras 3.5 s */
-        setUiState("error");
-        setTimeout(function() { setUiState("idle"); }, 3500);
+
+        /* No es duplicado → enviar */
+        setUiState("loading");
+
+        postToSheets(name, dni, cel)
+          .then(function() {
+            lsSaveRegistered(dni);
+            setUiState("success");
+            showSuccess(name);
+          })
+          .catch(function() {
+            setUiState("error");
+            setTimeout(function() { setUiState("idle"); }, 3500);
+          });
       });
   }
 
