@@ -168,6 +168,51 @@ var CFG = {
 }());
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CONTADOR DE PASES — Estado compartido con initConfirm
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+var currentPases = 1;
+var MAX_PASES    = 5;
+
+(function initPases() {
+  var btnDown = document.getElementById("pasesDown");
+  var btnUp   = document.getElementById("pasesUp");
+  var numEl   = document.getElementById("pasesNum");
+
+  if (!btnDown || !btnUp || !numEl) return;
+
+  function animateBump() {
+    numEl.classList.remove("bump");
+    /* reflow fuerza reinicio de la animación */
+    void numEl.offsetWidth;
+    numEl.classList.add("bump");
+  }
+
+  function updateDisplay() {
+    numEl.textContent = currentPases;
+    btnDown.disabled  = (currentPases <= 1);
+    btnUp.disabled    = (currentPases >= MAX_PASES);
+  }
+
+  btnDown.addEventListener("click", function() {
+    if (currentPases > 1) {
+      currentPases--;
+      updateDisplay();
+      animateBump();
+    }
+  });
+
+  btnUp.addEventListener("click", function() {
+    if (currentPases < MAX_PASES) {
+      currentPases++;
+      updateDisplay();
+      animateBump();
+    }
+  });
+
+  updateDisplay();
+}());
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    TOAST — INVITADO YA REGISTRADO
    Controlado desde initConfirm. No depende de librerías.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -297,16 +342,26 @@ var Toast = (function() {
       });
   }
 
+  var elSuccessPases = document.getElementById("successPases");
+  var wrapPases      = document.getElementById("fieldWrapPases");
+  var errPases       = document.getElementById("fieldErrorPases");
+
   /* ── Registro asíncrono en Google Sheets ─────────── */
-  function postToSheets(name, dni, cel) {
+  function postToSheets(name, dni, cel, pases) {
     if (!CFG.sheetsUrl) { return Promise.resolve(); }
-    var body = new URLSearchParams({ nombre: name, dni: dni, celular: cel });
+    var body = new URLSearchParams({
+      nombre:  name,
+      dni:     dni,
+      celular: cel,
+      pases:   String(pases)
+    });
     return fetch(CFG.sheetsUrl, { method: "POST", mode: "no-cors", body: body });
   }
 
   /* ── Mostrar panel de éxito ──────────────────────── */
-  function showSuccess(name) {
-    if (elSuccessName) { elSuccessName.textContent = name; }
+  function showSuccess(name, pases) {
+    if (elSuccessName)  { elSuccessName.textContent = name; }
+    if (elSuccessPases) { elSuccessPases.textContent = pases; }
     if (elSuccess) {
       elSuccess.hidden = false;
       setTimeout(function() {
@@ -319,11 +374,22 @@ var Toast = (function() {
   function validateAndSend() {
     if (uiState !== "idle") { return; }
 
-    var name = inpName.value.trim();
-    var dni  = inpDni.value.replace(/\D/g, "");
-    var cel  = inpCel.value.trim();
+    var name  = inpName.value.trim();
+    var dni   = inpDni.value.replace(/\D/g, "");
+    var cel   = inpCel.value.trim();
+    var pases = currentPases;
 
     clearAllErrors();
+
+    /* Validar pases (defensa: nunca debería fallar con los botones +/-) */
+    if (pases < 1 || pases > MAX_PASES) {
+      if (wrapPases && errPases) {
+        wrapPases.classList.add("has-error");
+        errPases.textContent = "Selecciona entre 1 y " + MAX_PASES + " pases.";
+      }
+      return;
+    }
+
     if (!validate(name, dni, cel)) { return; }
 
     /* Capa 1: localStorage (mismo dispositivo) — respuesta inmediata */
@@ -339,19 +405,18 @@ var Toast = (function() {
       .then(function(isDuplicate) {
         if (isDuplicate) {
           setUiState("idle");
-          lsSaveRegistered(dni); /* sincronizar localStorage */
+          lsSaveRegistered(dni);
           Toast.show();
           return;
         }
 
-        /* No es duplicado → enviar */
         setUiState("loading");
 
-        postToSheets(name, dni, cel)
+        postToSheets(name, dni, cel, pases)
           .then(function() {
             lsSaveRegistered(dni);
             setUiState("success");
-            showSuccess(name);
+            showSuccess(name, pases);
           })
           .catch(function() {
             setUiState("error");
@@ -378,6 +443,14 @@ var Toast = (function() {
    [inpCel,  wrapCel,  errCel]].forEach(function(t) {
     t[0].addEventListener("input", function() { clearFieldError(t[1], t[2]); });
   });
+
+  /* Limpiar error de pases si existiera (en caso de manipulación manual) */
+  if (wrapPases && errPases) {
+    wrapPases.addEventListener("click", function() {
+      wrapPases.classList.remove("has-error");
+      errPases.textContent = "";
+    });
+  }
 }());
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -404,34 +477,29 @@ var Toast = (function() {
 }());
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   REPRODUCTOR DE AUDIO — Autoplay con 3 estrategias
-   1) Play directo al cargar (funciona si hay gesto previo)
-   2) Play silenciado → desmutear (casi siempre permitido)
-   3) Play al primer toque del usuario (fallback universal)
+   REPRODUCTOR DE AUDIO — Módulo expuesto como AudioPlayer.
+   El splash garantiza el gesto del usuario, por lo que
+   play() siempre se llama dentro de un evento de interacción.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-(function initAudio() {
+var AudioPlayer = (function() {
   var btn = document.getElementById("audioBtn");
-  if (!btn) return;
-
   var TARGET_VOL = 0.55;
 
-  var track    = new Audio(CFG.audioSrc);
+  var track = new Audio(CFG.audioSrc);
   track.loop    = true;
   track.preload = "auto";
-  track.volume  = 0;        // empieza en 0 para hacer fade-in
+  track.volume  = 0;
 
-  var playing      = false;
-  var fallbackDone = false; // guarda que el fallback no se dispare dos veces
+  var playing = false;
 
-  /* --- Estado visual del botón --- */
   function setState(active) {
     playing = active;
+    if (!btn) return;
     btn.classList.toggle("is-playing", active);
     btn.setAttribute("aria-pressed", String(active));
     btn.setAttribute("aria-label", active ? "Pausar música" : "Reproducir música");
   }
 
-  /* --- Sube el volumen suavemente de 0 a TARGET_VOL --- */
   function fadeIn() {
     var step  = TARGET_VOL / 25;
     var timer = setInterval(function() {
@@ -444,77 +512,81 @@ var Toast = (function() {
     }, 60);
   }
 
-  /* --- Pausa manual --- */
   function pause() {
     track.pause();
     setState(false);
   }
 
-  /* --- Botón flotante: toggle play/pause --- */
-  btn.addEventListener("click", function() {
-    if (playing) {
-      pause();
-    } else {
-      track.volume = 0;
-      track.muted  = false;
-      track.play()
-        .then(function() { setState(true); fadeIn(); })
-        .catch(function() { setState(false); });
-    }
-  });
+  function play() {
+    if (playing) return;
+    track.volume = 0;
+    track.muted  = false;
+    track.play()
+      .then(function() { setState(true); fadeIn(); })
+      .catch(function() { setState(false); });
+  }
 
-  /* ─── Estrategia 1: play directo al cargar ─── */
-  track.play()
-    .then(function() {
-      setState(true);
-      fadeIn();
-    })
-    .catch(function() {
-
-      /* ─── Estrategia 2: play silenciado → desmutear ─── */
-      track.muted  = true;
-      track.volume = 0;
-      track.play()
-        .then(function() {
-          track.muted = false;   // quitar silencio inmediatamente
-          setState(true);
-          fadeIn();
-        })
-        .catch(function() {
-
-          /* ─── Estrategia 3: esperar primer toque del usuario ─── */
-          setState(false);
-
-          var EVENTS = ["pointerdown", "touchstart", "click", "keydown"];
-
-          function onFirstTouch() {
-            if (fallbackDone) return;
-            fallbackDone = true;
-
-            /* limpiar todos los listeners de fallback */
-            EVENTS.forEach(function(evt) {
-              document.removeEventListener(evt, onFirstTouch);
-            });
-
-            track.muted  = false;
-            track.volume = 0;
-            track.play()
-              .then(function() { setState(true); fadeIn(); })
-              .catch(function() { setState(false); });
-          }
-
-          EVENTS.forEach(function(evt) {
-            document.addEventListener(evt, onFirstTouch, { passive: true });
-          });
-        });
+  if (btn) {
+    btn.addEventListener("click", function() {
+      playing ? pause() : play();
     });
+  }
 
-  /* ─── Reanudar si el usuario regresa a la pestaña ─── */
   document.addEventListener("visibilitychange", function() {
     if (!document.hidden && playing) {
       track.play().catch(function() {});
     }
   });
+
+  return { play: play, pause: pause };
+}());
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SPLASH SCREEN — Pantalla de bienvenida.
+   Al hacer clic el navegador registra el gesto del usuario,
+   lo que permite que audio.play() funcione sin bloqueos.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+(function initSplash() {
+  var splash      = document.getElementById("splashScreen");
+  var splashBtn   = document.getElementById("splashBtn");
+  var splashStars = document.getElementById("splashStars");
+
+  if (!splash || !splashBtn) return;
+
+  /* Generar estrellas en el fondo del splash */
+  if (splashStars) {
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < 120; i++) {
+      var s  = document.createElement("div");
+      var sz = (Math.random() * 2 + 0.4).toFixed(1);
+      s.className = "splash-star";
+      s.style.cssText =
+        "width:"    + sz + "px;" +
+        "height:"   + sz + "px;" +
+        "left:"     + (Math.random() * 100).toFixed(2) + "%;" +
+        "top:"      + (Math.random() * 100).toFixed(2) + "%;" +
+        "--dur:"    + (Math.random() * 4 + 2).toFixed(1) + "s;" +
+        "--delay:"  + (Math.random() * 6).toFixed(1) + "s;" +
+        "--op:"     + (Math.random() * 0.55 + 0.30).toFixed(2);
+      frag.appendChild(s);
+    }
+    splashStars.appendChild(frag);
+  }
+
+  splashBtn.addEventListener("click", function() {
+    /* 1. Música — garantizada por el gesto del usuario */
+    AudioPlayer.play();
+
+    /* 2. Ocultar splash con transición */
+    document.body.style.overflow = "";
+    splash.classList.add("is-hidden");
+    setTimeout(function() {
+      if (splash.parentNode) { splash.parentNode.removeChild(splash); }
+    }, 900);
+  });
+
+  /* Bloquear scroll mientras el splash está visible */
+  document.body.style.overflow = "hidden";
 }());
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

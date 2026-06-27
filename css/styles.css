@@ -2073,3 +2073,297 @@ section {
     transform: none !important;
   }
 }
+
+/* ================================================================
+   TIPOGRAFÍA — Grosor y cuerpo incrementados para mejor legibilidad
+================================================================ */
+body {
+  font-weight: 500;
+}
+
+.story-para {
+  font-weight: 400;
+}
+
+.family-name span {
+  font-weight: 400;
+}
+
+.padrinos-sub,
+.cta-sub,
+.countdown-date,
+.detalle-sub,
+.dc-reserved-desc,
+.dc-intro,
+.footer-magic {
+  font-weight: 500;
+}
+
+/* Contacto del desarrollador — bloque premium: azul profundo #1A2D5A + texto dorado */
+.dev-name {
+  font-family: var(--roman) !important;
+  font-weight: 700 !important;
+  font-size: .88rem !important;
+  letter-spacing: .10em !important;
+  line-height: 1.75 !important;
+  /* Cancelar el efecto de texto degradado anterior */
+  color: #D4AF37 !important;
+  -webkit-text-fill-color: #D4AF37 !important;
+  background: #1A2D5A !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  background-size: unset !important;
+  animation: none !important;
+  /* Bloque contenedor */
+  display: inline-block !important;
+  border-radius: 10px !important;
+  padding: 12px 24px !important;
+  margin-top: 10px !important;
+  border: 1px solid rgba(212,175,55,.32) !important;
+  box-shadow:
+    0 4px 20px rgba(26,45,90,.45),
+    inset 0 1px 0 rgba(255,255,255,.10) !important;
+  text-shadow: 0 0 18px rgba(212,175,55,.30) !important;
+}
+
+/* ================================================================
+   SPLASH SCREEN — Pantalla de bienvenida / desbloqueo de audio
+================================================================ */
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: radial-gradient(ellipse at 50% 28%, #1E3A70 0%, #07071E 60%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px 24px;
+  overflow: hidden;
+  transition: opacity .85s cubic-bezier(.22,.61,.36,1),
+              transform .85s cubic-bezier(.22,.61,.36,1),
+              visibility .85s;
+}
+
+.splash-screen.is-hidden {
+  opacity: 0;
+  transform: scale(1.05);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.splash-stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.splash-star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0;
+  animation: star-blink var(--dur, 3s) ease-in-out var(--delay, 0s) infinite;
+}
+
+.splash-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: splash-rise .9s cubic-bezier(.22,.61,.36,1) both;
+}
+
+@keyframes splash-rise {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.splash-crown {
+  margin-bottom: 16px;
+  filter: drop-shadow(0 0 18px rgba(135,206,235,.55));
+  animation: crown-float 4s ease-in-out infinite;
+}
+
+.splash-crown svg { width: 68px; height: auto; }
+
+.splash-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: .54rem;
+  letter-spacing: .44em;
+  text-transform: uppercase;
+  color: rgba(200,225,255,.58);
+  margin-bottom: 20px;
+  padding-left: .44em;
+}
+
+.splash-name {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.6rem, 14vw, 3.8rem);
+  font-weight: 500;
+  color: #EAF2FF;
+  line-height: 1.1;
+  text-shadow: 0 0 40px rgba(100,165,240,.40);
+  margin-bottom: 4px;
+}
+
+.splash-sub {
+  font-family: 'Great Vibes', 'Cormorant Garamond', serif;
+  font-size: clamp(1.6rem, 8vw, 2.2rem);
+  color: #C9A84C;
+  text-shadow: 0 0 28px rgba(212,175,55,.55);
+  margin-bottom: 4px;
+}
+
+.splash-xv {
+  font-family: 'Cinzel', serif;
+  font-size: .52rem;
+  letter-spacing: .38em;
+  text-transform: uppercase;
+  color: rgba(180,210,255,.48);
+  padding-left: .38em;
+  margin-bottom: 36px;
+}
+
+.splash-gems {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 28px;
+  color: rgba(200,235,255,.45);
+  font-size: .9rem;
+  letter-spacing: 3px;
+}
+
+.splash-btn {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: .68rem;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: #0D1B42;
+  background: linear-gradient(135deg, #C0DCF5 0%, #87CEEB 45%, #C8E8FF 100%);
+  border: none;
+  border-radius: 50px;
+  padding: 18px 44px;
+  cursor: pointer;
+  box-shadow:
+    0 0 40px rgba(135,206,235,.40),
+    0 16px 36px -8px rgba(40,80,152,.55),
+    inset 0 1px 0 rgba(255,255,255,.58);
+  animation: btn-glow-pulse 2.5s ease-in-out infinite;
+  transition: transform .35s cubic-bezier(.22,.61,.36,1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+@keyframes btn-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 28px rgba(135,206,235,.30),
+                0 14px 32px -8px rgba(40,80,152,.50),
+                inset 0 1px 0 rgba(255,255,255,.58);
+  }
+  50% {
+    box-shadow: 0 0 58px rgba(135,206,235,.62),
+                0 14px 32px -8px rgba(40,80,152,.65),
+                inset 0 1px 0 rgba(255,255,255,.58);
+  }
+}
+
+.splash-btn:hover,
+.splash-btn:focus-visible {
+  transform: translateY(-3px) scale(1.04);
+  outline: none;
+}
+
+.splash-btn:active { transform: scale(.98); }
+
+.splash-hint {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: .9rem;
+  color: rgba(180,210,255,.38);
+  margin-top: 20px;
+}
+
+/* ================================================================
+   PASES COUNTER — Selector elegante de número de acompañantes
+================================================================ */
+.pases-counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 8px 0 6px;
+  border-bottom: 1px solid rgba(58,104,152,.38);
+  transition: border-color .3s;
+}
+
+.field-wrap.has-error .pases-counter {
+  border-color: var(--error);
+  animation: shake .45s var(--ease) both;
+}
+
+.pases-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(58,104,152,.32);
+  background: rgba(255,255,255,.68);
+  color: #1A3060;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s var(--ease), transform .2s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.pases-btn:hover:not(:disabled) {
+  background: rgba(58,104,152,.16);
+  transform: scale(1.1);
+}
+
+.pases-btn:active:not(:disabled) { transform: scale(.92); }
+.pases-btn:disabled { opacity: .30; cursor: default; transform: none !important; }
+
+.pases-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 76px;
+}
+
+.pases-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.1rem;
+  font-weight: 600;
+  color: #0D1B42;
+  line-height: 1.1;
+  transition: transform .15s ease;
+}
+
+.pases-num.bump {
+  animation: pases-bump .22s ease both;
+}
+
+@keyframes pases-bump {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+.pases-label-small {
+  font-family: 'Cinzel', serif;
+  font-size: .4rem;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--silver-dim);
+  padding-left: .32em;
+  margin-top: 2px;
+}

@@ -5,13 +5,15 @@ function doPost(e) {
   var nombre  = (e.parameter.nombre  || "").toString().trim();
   var dni     = (e.parameter.dni     || "").toString().trim();
   var celular = (e.parameter.celular || "").toString().trim();
+  var pases   = parseInt(e.parameter.pases || "1", 10);
+  if (isNaN(pases) || pases < 1 || pases > 5) { pases = 1; }
   var fecha   = Utilities.formatDate(new Date(), "America/Lima", "dd/MM/yyyy HH:mm:ss");
 
   if (sheet.getLastRow() < 1) {
-    sheet.appendRow(["Fecha", "Nombre Completo", "DNI", "Celular"]);
+    sheet.appendRow(["Fecha", "Nombre Completo", "DNI", "Celular", "Pases"]);
   }
 
-  sheet.appendRow([fecha, nombre, dni, celular]);
+  sheet.appendRow([fecha, nombre, dni, celular, pases]);
 
   return ContentService
     .createTextOutput(JSON.stringify({ status: "ok" }))
@@ -25,11 +27,10 @@ function doGet(e) {
     var sheet = ss.getActiveSheet();
     var lastRow = sheet.getLastRow();
 
-    var exists = false;
+    var exists   = false;
     var dniQuery = e.parameter.dni.toString().trim();
 
     if (lastRow > 1) {
-      /* La columna DNI es la 3ª (índice 2). Leemos solo esa columna para eficiencia. */
       var dniValues = sheet.getRange(2, 3, lastRow - 1, 1).getValues();
       for (var i = 0; i < dniValues.length; i++) {
         if (dniValues[i][0] && dniValues[i][0].toString().trim() === dniQuery) {
