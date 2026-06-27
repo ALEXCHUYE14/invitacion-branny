@@ -160,57 +160,19 @@ var CFG = {
    ENLACE GOOGLE MAPS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 (function setMapsLink() {
-  var btn = document.getElementById("mapsBtn");
-  if (!btn) return;
-  btn.href =
-    "https://www.google.com/maps/search/?api=1&query=" +
-    encodeURIComponent(CFG.mapsQuery);
+  var frame = document.getElementById("mapsFrame");
+  var link  = document.getElementById("mapsBtn");
+  var q     = encodeURIComponent(CFG.mapsQuery);
+  if (frame) {
+    frame.src = "https://maps.google.com/maps?q=" + q + "&output=embed&z=16";
+  }
+  if (link) {
+    link.href = "https://www.google.com/maps/search/?api=1&query=" + q;
+  }
 }());
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   CONTADOR DE PASES — Estado compartido con initConfirm
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* Pases fijo en 1 — campo eliminado de la UI */
 var currentPases = 1;
-var MAX_PASES    = 5;
-
-(function initPases() {
-  var btnDown = document.getElementById("pasesDown");
-  var btnUp   = document.getElementById("pasesUp");
-  var numEl   = document.getElementById("pasesNum");
-
-  if (!btnDown || !btnUp || !numEl) return;
-
-  function animateBump() {
-    numEl.classList.remove("bump");
-    /* reflow fuerza reinicio de la animación */
-    void numEl.offsetWidth;
-    numEl.classList.add("bump");
-  }
-
-  function updateDisplay() {
-    numEl.textContent = currentPases;
-    btnDown.disabled  = (currentPases <= 1);
-    btnUp.disabled    = (currentPases >= MAX_PASES);
-  }
-
-  btnDown.addEventListener("click", function() {
-    if (currentPases > 1) {
-      currentPases--;
-      updateDisplay();
-      animateBump();
-    }
-  });
-
-  btnUp.addEventListener("click", function() {
-    if (currentPases < MAX_PASES) {
-      currentPases++;
-      updateDisplay();
-      animateBump();
-    }
-  });
-
-  updateDisplay();
-}());
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    TOAST — INVITADO YA REGISTRADO
@@ -342,10 +304,6 @@ var Toast = (function() {
       });
   }
 
-  var elSuccessPases = document.getElementById("successPases");
-  var wrapPases      = document.getElementById("fieldWrapPases");
-  var errPases       = document.getElementById("fieldErrorPases");
-
   /* ── Registro asíncrono en Google Sheets ─────────── */
   function postToSheets(name, dni, cel, pases) {
     if (!CFG.sheetsUrl) { return Promise.resolve(); }
@@ -359,9 +317,8 @@ var Toast = (function() {
   }
 
   /* ── Mostrar panel de éxito ──────────────────────── */
-  function showSuccess(name, pases) {
-    if (elSuccessName)  { elSuccessName.textContent = name; }
-    if (elSuccessPases) { elSuccessPases.textContent = pases; }
+  function showSuccess(name) {
+    if (elSuccessName) { elSuccessName.textContent = name; }
     if (elSuccess) {
       elSuccess.hidden = false;
       setTimeout(function() {
@@ -374,21 +331,11 @@ var Toast = (function() {
   function validateAndSend() {
     if (uiState !== "idle") { return; }
 
-    var name  = inpName.value.trim();
-    var dni   = inpDni.value.replace(/\D/g, "");
-    var cel   = inpCel.value.trim();
-    var pases = currentPases;
+    var name = inpName.value.trim();
+    var dni  = inpDni.value.replace(/\D/g, "");
+    var cel  = inpCel.value.trim();
 
     clearAllErrors();
-
-    /* Validar pases (defensa: nunca debería fallar con los botones +/-) */
-    if (pases < 1 || pases > MAX_PASES) {
-      if (wrapPases && errPases) {
-        wrapPases.classList.add("has-error");
-        errPases.textContent = "Selecciona entre 1 y " + MAX_PASES + " pases.";
-      }
-      return;
-    }
 
     if (!validate(name, dni, cel)) { return; }
 
@@ -412,11 +359,11 @@ var Toast = (function() {
 
         setUiState("loading");
 
-        postToSheets(name, dni, cel, pases)
+        postToSheets(name, dni, cel, currentPases)
           .then(function() {
             lsSaveRegistered(dni);
             setUiState("success");
-            showSuccess(name, pases);
+            showSuccess(name);
           })
           .catch(function() {
             setUiState("error");
