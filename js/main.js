@@ -557,9 +557,11 @@ var AudioPlayer = (function() {
 
   if (!splash || !splashBtn) return;
 
-  /* Generar estrellas en el fondo del splash */
+  /* Generar estrellas y destellos en el fondo del splash */
   if (splashStars) {
     var frag = document.createDocumentFragment();
+
+    /* Puntos parpadeantes */
     for (var i = 0; i < 120; i++) {
       var s  = document.createElement("div");
       var sz = (Math.random() * 2 + 0.4).toFixed(1);
@@ -574,6 +576,28 @@ var AudioPlayer = (function() {
         "--op:"     + (Math.random() * 0.55 + 0.30).toFixed(2);
       frag.appendChild(s);
     }
+
+    /* Destellos en forma de cruz dorada */
+    var sparkleColors = [
+      "rgba(212,175,55,.92)",
+      "rgba(255,240,160,.90)",
+      "rgba(255,255,255,.95)",
+      "rgba(240,208,96,.88)"
+    ];
+    for (var j = 0; j < 32; j++) {
+      var sp = document.createElement("div");
+      var sw = (Math.random() * 14 + 8).toFixed(0);
+      sp.className = "splash-sparkle";
+      sp.style.cssText =
+        "left:"     + (Math.random() * 96 + 2).toFixed(2) + "%;" +
+        "top:"      + (Math.random() * 96 + 2).toFixed(2) + "%;" +
+        "--sdur:"   + (Math.random() * 2 + 1.6).toFixed(1) + "s;" +
+        "--sdelay:" + (Math.random() * 6).toFixed(1) + "s;" +
+        "--sw:"     + sw + "px;" +
+        "--sc:"     + sparkleColors[Math.floor(Math.random() * sparkleColors.length)];
+      frag.appendChild(sp);
+    }
+
     splashStars.appendChild(frag);
   }
 

@@ -2167,6 +2167,43 @@ body {
   animation: star-blink var(--dur, 3s) ease-in-out var(--delay, 0s) infinite;
 }
 
+/* ── Destellos (sparkles) en forma de cruz ─────────── */
+.splash-sparkle {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  animation: sparkle-burst var(--sdur, 2.2s) ease-in-out var(--sdelay, 0s) infinite;
+}
+
+.splash-sparkle::before,
+.splash-sparkle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--sc, rgba(212,175,55,.92));
+  border-radius: 2px;
+}
+
+.splash-sparkle::before {
+  width: var(--sw, 14px);
+  height: 1.5px;
+}
+
+.splash-sparkle::after {
+  width: 1.5px;
+  height: var(--sw, 14px);
+}
+
+@keyframes sparkle-burst {
+  0%   { opacity: 0;    transform: scale(0.2) rotate(0deg);   }
+  25%  { opacity: 1;    transform: scale(1)   rotate(45deg);  }
+  65%  { opacity: .80;  transform: scale(1.1) rotate(90deg);  }
+  100% { opacity: 0;    transform: scale(0.2) rotate(135deg); }
+}
+
 .splash-inner {
   position: relative;
   z-index: 2;
