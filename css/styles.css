@@ -2187,7 +2187,7 @@ body {
   animation: crown-float 4s ease-in-out infinite;
 }
 
-.splash-crown svg { width: 68px; height: auto; }
+.splash-crown img { width: 88px; height: auto; display: block; }
 
 .splash-eyebrow {
   font-family: 'Cinzel', serif;
