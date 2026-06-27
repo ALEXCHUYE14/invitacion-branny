@@ -395,13 +395,6 @@ var Toast = (function() {
     t[0].addEventListener("input", function() { clearFieldError(t[1], t[2]); });
   });
 
-  /* Limpiar error de pases si existiera (en caso de manipulación manual) */
-  if (wrapPases && errPases) {
-    wrapPases.addEventListener("click", function() {
-      wrapPases.classList.remove("has-error");
-      errPases.textContent = "";
-    });
-  }
 }());
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -549,10 +542,12 @@ var AudioPlayer = (function() {
   }
 
   splashBtn.addEventListener("click", function() {
-    /* 1. Música — garantizada por el gesto del usuario */
-    AudioPlayer.play();
+    /* Música — protegida con try/catch para que cualquier error de audio
+       nunca bloquee el cierre del splash */
+    try { AudioPlayer.play(); } catch (e) {}
 
-    /* 2. Ocultar splash con transición */
+    /* Restaurar scroll y desmontar splash */
+    document.documentElement.style.overflow = "";
     document.body.style.overflow = "";
     splash.classList.add("is-hidden");
     setTimeout(function() {
@@ -560,7 +555,8 @@ var AudioPlayer = (function() {
     }, 900);
   });
 
-  /* Bloquear scroll mientras el splash está visible */
+  /* Bloquear scroll en html Y body para cobertura cross-browser */
+  document.documentElement.style.overflow = "hidden";
   document.body.style.overflow = "hidden";
 }());
 
