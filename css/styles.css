@@ -2133,13 +2133,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background:
-    linear-gradient(160deg,
-      rgba(238,248,253,.86) 0%,
-      rgba(210,232,250,.88) 40%,
-      rgba(192,220,244,.84) 70%,
-      rgba(212,236,252,.88) 100%),
-    url('../img/bienvenida.png') center / cover no-repeat;
+  background: url('../img/bienvenida.png') center / cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2180,15 +2174,6 @@ body {
   flex-direction: column;
   align-items: center;
   animation: splash-rise .9s cubic-bezier(.22,.61,.36,1) both;
-  background: rgba(255,255,255,.28);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: 28px;
-  border: 1px solid rgba(255,255,255,.50);
-  padding: 40px 36px 44px;
-  box-shadow:
-    0 8px 48px rgba(10,40,100,.13),
-    inset 0 1px 0 rgba(255,255,255,.60);
 }
 
 @keyframes splash-rise {
