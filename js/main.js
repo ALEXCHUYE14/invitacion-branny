@@ -422,6 +422,10 @@ var Toast = (function() {
             setUiState("error");
             setTimeout(function() { setUiState("idle"); }, 3500);
           });
+      })
+      .catch(function() {
+        setUiState("error");
+        setTimeout(function() { setUiState("idle"); }, 3500);
       });
   }
 

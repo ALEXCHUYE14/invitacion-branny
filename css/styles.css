@@ -2133,7 +2133,13 @@ body {
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background: radial-gradient(ellipse at 50% 28%, #1E3A70 0%, #07071E 60%);
+  background:
+    linear-gradient(160deg,
+      rgba(238,248,253,.86) 0%,
+      rgba(210,232,250,.88) 40%,
+      rgba(192,220,244,.84) 70%,
+      rgba(212,236,252,.88) 100%),
+    url('../img/bienvenida.png') center / cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2162,7 +2168,7 @@ body {
 .splash-star {
   position: absolute;
   border-radius: 50%;
-  background: #fff;
+  background: rgba(212,175,55,.65);
   opacity: 0;
   animation: star-blink var(--dur, 3s) ease-in-out var(--delay, 0s) infinite;
 }
@@ -2174,6 +2180,15 @@ body {
   flex-direction: column;
   align-items: center;
   animation: splash-rise .9s cubic-bezier(.22,.61,.36,1) both;
+  background: rgba(255,255,255,.28);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 28px;
+  border: 1px solid rgba(255,255,255,.50);
+  padding: 40px 36px 44px;
+  box-shadow:
+    0 8px 48px rgba(10,40,100,.13),
+    inset 0 1px 0 rgba(255,255,255,.60);
 }
 
 @keyframes splash-rise {
@@ -2183,7 +2198,7 @@ body {
 
 .splash-crown {
   margin-bottom: 16px;
-  filter: drop-shadow(0 0 18px rgba(135,206,235,.55));
+  filter: drop-shadow(0 0 18px rgba(212,175,55,.60));
   animation: crown-float 4s ease-in-out infinite;
 }
 
@@ -2194,7 +2209,7 @@ body {
   font-size: .54rem;
   letter-spacing: .44em;
   text-transform: uppercase;
-  color: rgba(200,225,255,.58);
+  color: #3A6898;
   margin-bottom: 20px;
   padding-left: .44em;
 }
@@ -2203,9 +2218,9 @@ body {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(2.6rem, 14vw, 3.8rem);
   font-weight: 500;
-  color: #EAF2FF;
+  color: #0D1B42;
   line-height: 1.1;
-  text-shadow: 0 0 40px rgba(100,165,240,.40);
+  text-shadow: 0 2px 14px rgba(10,30,80,.10);
   margin-bottom: 4px;
 }
 
@@ -2213,7 +2228,7 @@ body {
   font-family: 'Great Vibes', 'Cormorant Garamond', serif;
   font-size: clamp(1.6rem, 8vw, 2.2rem);
   color: #C9A84C;
-  text-shadow: 0 0 28px rgba(212,175,55,.55);
+  text-shadow: 0 0 22px rgba(212,175,55,.45);
   margin-bottom: 4px;
 }
 
@@ -2222,7 +2237,7 @@ body {
   font-size: .52rem;
   letter-spacing: .38em;
   text-transform: uppercase;
-  color: rgba(180,210,255,.48);
+  color: #2B5588;
   padding-left: .38em;
   margin-bottom: 36px;
 }
@@ -2231,7 +2246,7 @@ body {
   display: flex;
   gap: 14px;
   margin-bottom: 28px;
-  color: rgba(200,235,255,.45);
+  color: rgba(58,104,152,.60);
   font-size: .9rem;
   letter-spacing: 3px;
 }
@@ -2242,16 +2257,16 @@ body {
   font-size: .68rem;
   letter-spacing: .24em;
   text-transform: uppercase;
-  color: #0D1B42;
-  background: linear-gradient(135deg, #C0DCF5 0%, #87CEEB 45%, #C8E8FF 100%);
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #5EB0E0 0%, #3A80B8 50%, #2A6098 100%);
   border: none;
   border-radius: 50px;
   padding: 18px 44px;
   cursor: pointer;
   box-shadow:
-    0 0 40px rgba(135,206,235,.40),
-    0 16px 36px -8px rgba(40,80,152,.55),
-    inset 0 1px 0 rgba(255,255,255,.58);
+    0 0 40px rgba(58,144,220,.38),
+    0 16px 36px -8px rgba(18,60,130,.52),
+    inset 0 1px 0 rgba(255,255,255,.32);
   animation: btn-glow-pulse 2.5s ease-in-out infinite;
   transition: transform .35s cubic-bezier(.22,.61,.36,1);
   -webkit-tap-highlight-color: transparent;
@@ -2259,14 +2274,14 @@ body {
 
 @keyframes btn-glow-pulse {
   0%, 100% {
-    box-shadow: 0 0 28px rgba(135,206,235,.30),
-                0 14px 32px -8px rgba(40,80,152,.50),
-                inset 0 1px 0 rgba(255,255,255,.58);
+    box-shadow: 0 0 28px rgba(58,144,220,.28),
+                0 14px 32px -8px rgba(18,60,130,.48),
+                inset 0 1px 0 rgba(255,255,255,.32);
   }
   50% {
-    box-shadow: 0 0 58px rgba(135,206,235,.62),
-                0 14px 32px -8px rgba(40,80,152,.65),
-                inset 0 1px 0 rgba(255,255,255,.58);
+    box-shadow: 0 0 58px rgba(58,144,220,.58),
+                0 14px 32px -8px rgba(18,60,130,.62),
+                inset 0 1px 0 rgba(255,255,255,.32);
   }
 }
 
@@ -2282,7 +2297,7 @@ body {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
   font-size: .9rem;
-  color: rgba(180,210,255,.38);
+  color: rgba(42,80,130,.52);
   margin-top: 20px;
 }
 
