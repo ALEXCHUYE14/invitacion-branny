@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="es">
+<html lang="es" style="overflow:hidden">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -19,6 +19,14 @@
   <link rel="stylesheet" href="css/styles.css" />
 
   <style>
+    /* ── CSS CRÍTICO: cubre la pantalla ANTES de que cargue styles.css
+       Evita el destello (FOUC) de la tarjeta de invitación ── */
+    #splashScreen {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background-color: #C6E0F5;
+    }
     /* ── Toast de invitado ya registrado ── */
     #dupToast {
       position: fixed;
@@ -404,8 +412,8 @@
           <text x="27" y="100" text-anchor="middle" dominant-baseline="middle" font-family="Cinzel,serif" font-size="7.5" fill="rgba(26,45,90,.85)">IX</text>
           <text x="36" y="64" text-anchor="middle" dominant-baseline="middle" font-family="Cinzel,serif" font-size="7" fill="rgba(26,45,90,.70)">X</text>
           <text x="63" y="38" text-anchor="middle" dominant-baseline="middle" font-family="Cinzel,serif" font-size="7" fill="rgba(26,45,90,.70)">XI</text>
-          <!-- Hour hand at 8:00 → angle 240° from 12: x=100+40*sin(240°), y=100-40*cos(240°) -->
-          <line x1="100" y1="100" x2="65" y2="120" stroke="url(#handGrad)" stroke-width="4" stroke-linecap="round" filter="url(#clockGlow)"/>
+          <!-- Hour hand at 7:00 → angle 210° from 12: x=100+40*sin(210°), y=100-40*cos(210°) -->
+          <line x1="100" y1="100" x2="80" y2="135" stroke="url(#handGrad)" stroke-width="4" stroke-linecap="round" filter="url(#clockGlow)"/>
           <!-- Minute hand at :00 → pointing up -->
           <line x1="100" y1="100" x2="100" y2="40" stroke="url(#handGrad)" stroke-width="2.5" stroke-linecap="round" filter="url(#clockGlow)"/>
           <!-- Center cap -->
@@ -450,7 +458,7 @@
       </div>
     </div>
 
-    <p class="countdown-date">Viernes 17 de Julio · 2026 · 8:00 p.m.</p>
+    <p class="countdown-date">Viernes 17 de Julio · 2026 · 7:00 p.m.</p>
   </section>
 
 
@@ -589,7 +597,7 @@
         </span>
         <p class="detalle-key">Fecha y Hora</p>
         <p class="detalle-val">Viernes 17 de Julio</p>
-        <p class="detalle-sub">2026 &nbsp;·&nbsp; 8:00 p.m.</p>
+        <p class="detalle-sub">2026 &nbsp;·&nbsp; 7:00 p.m.</p>
       </div>
 
       <div class="detalle-sep" aria-hidden="true"></div>
@@ -788,7 +796,7 @@
         <p class="confirm-success-title">¡Tu lugar está reservado!</p>
         <p class="confirm-success-body">
           Gracias, <strong id="successGuestName"></strong>.<br>
-          Te esperamos el <em>Viernes 17 de Julio · 8:00 p.m.</em><br>
+          Te esperamos el <em>Viernes 17 de Julio · 7:00 p.m.</em><br>
           en Gaetano — Sullana.&nbsp;&nbsp;✨
         </p>
       </div>
@@ -804,7 +812,7 @@
     <div class="footer-rule" aria-hidden="true"></div>
     <p class="footer-name">Branny Sayumi Curay Sotomayor</p>
     <p class="footer-date">17 · 07 · 2026 — Sullana, Piura</p>
-    <p class="footer-magic" aria-hidden="true">✦ &nbsp; La magia comienza a las 8 de la noche &nbsp; ✦</p>
+    <p class="footer-magic" aria-hidden="true">✦ &nbsp; La magia comienza a las 7 de la noche &nbsp; ✦</p>
 
     <!-- Firma del desarrollador -->
     <div class="footer-dev">

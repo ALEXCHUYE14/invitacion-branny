@@ -5,7 +5,7 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 var CFG = {
   audioSrc:  "audio/cenicienta.mp3",
-  eventDate: "2026-07-17T20:00:00-05:00",
+  eventDate: "2026-07-17T19:00:00-05:00",
   mapsQuery: "Gaetano Sullana Piura Perú",
   sheetsUrl: "https://script.google.com/macros/s/AKfycbw0zONZALbHB7Ax0Z6MRsE2teIXTR3ityE33m9XDmZS5rQgP7U2-5xOlwv5t0YtrnncZQ/exec"
 };
@@ -546,18 +546,16 @@ var AudioPlayer = (function() {
        nunca bloquee el cierre del splash */
     try { AudioPlayer.play(); } catch (e) {}
 
-    /* Restaurar scroll y desmontar splash */
+    /* Restaurar scroll — quita el inline style puesto en <html> */
     document.documentElement.style.overflow = "";
-    document.body.style.overflow = "";
     splash.classList.add("is-hidden");
     setTimeout(function() {
       if (splash.parentNode) { splash.parentNode.removeChild(splash); }
     }, 900);
   });
 
-  /* Bloquear scroll en html Y body para cobertura cross-browser */
-  document.documentElement.style.overflow = "hidden";
-  document.body.style.overflow = "hidden";
+  /* El bloqueo de scroll ya está en el CSS crítico inline del <head>.
+     No es necesario repetirlo aquí; solo restauramos al cerrar. */
 }());
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
