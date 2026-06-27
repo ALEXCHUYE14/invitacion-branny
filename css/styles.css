@@ -1216,59 +1216,128 @@ section {
 .dc-reserved-card {
   display: flex;
   align-items: stretch;
-  background: rgba(255,255,255,.55);
-  border: 1px solid rgba(135,196,235,.35);
-  border-radius: 10px;
+  background: linear-gradient(135deg,
+    rgba(135,206,235,.22) 0%,
+    rgba(200,238,255,.30) 50%,
+    rgba(135,206,235,.18) 100%);
+  border: 1.8px solid rgba(79,195,247,.55);
+  border-radius: 16px;
   overflow: hidden;
   margin-bottom: 36px;
   text-align: left;
-  box-shadow: 0 4px 18px -6px rgba(80,135,195,.15);
+  box-shadow:
+    0 0 0 4px rgba(135,206,235,.14),
+    0 10px 32px -8px rgba(42,104,152,.28);
+  animation: reserved-glow 3s ease-in-out infinite;
+}
+
+@keyframes reserved-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 0 4px rgba(135,206,235,.14),
+      0 10px 32px -8px rgba(42,104,152,.28);
+    border-color: rgba(79,195,247,.55);
+  }
+  50% {
+    box-shadow:
+      0 0 0 5px rgba(135,206,235,.32),
+      0 10px 36px -6px rgba(42,104,152,.42),
+      0 0 48px rgba(135,206,235,.20);
+    border-color: rgba(79,195,247,.85);
+  }
 }
 
 .dc-celeste-stripe {
-  width: 5px;
+  width: 10px;
   flex-shrink: 0;
-  background: linear-gradient(180deg, #87CEEB, #4FC3F7, #87CEEB);
-  opacity: .75;
+  background: linear-gradient(180deg, #4FC3F7, #87CEEB, #B0E8FF, #87CEEB, #4FC3F7);
+  opacity: 1;
 }
 
 .dc-reserved-content {
-  padding: 22px 20px;
+  padding: 20px 18px;
   flex: 1;
 }
 
 .dc-reserved-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-family: var(--roman);
-  font-size: .42rem;
-  letter-spacing: .42em;
+  font-size: .50rem;
+  letter-spacing: .22em;
   text-transform: uppercase;
-  color: #87CEEB;
-  border: 1px solid rgba(135,206,235,.32);
-  border-radius: 20px;
-  padding: 4px 12px 3px;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #3A9EC5 0%, #2A7AB0 100%);
+  border-radius: 50px;
+  padding: 6px 14px 5px;
   margin-bottom: 14px;
+  box-shadow: 0 3px 12px rgba(42,122,176,.35);
 }
+
+.dc-reserved-main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.dc-reserved-text { flex: 1; }
 
 .dc-reserved-title {
   font-family: var(--serif);
-  font-size: 1.45rem;
-  font-weight: 500;
-  color: #2A6898;
+  font-size: 1.30rem;
+  font-weight: 600;
+  color: #1A5580;
   line-height: 1.2;
   margin-bottom: 8px;
 }
 
 .dc-reserved-desc {
   font-family: var(--serif);
-  font-size: .9rem;
-  color: var(--silver-dim);
+  font-size: .92rem;
+  color: #2A5070;
   line-height: 1.68;
+}
+
+.dc-reserved-desc strong {
+  font-weight: 700;
+  color: #1A5580;
 }
 
 .dc-reserved-desc em {
   font-style: italic;
-  color: rgba(42,104,152,.7);
+  color: #2A6898;
+}
+
+/* Swatch circular que muestra el color celeste reservado */
+.dc-color-swatch {
+  flex-shrink: 0;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #87CEEB 0%, #4FC3F7 45%, #B0E8FF 100%);
+  border: 3px solid rgba(255,255,255,.85);
+  box-shadow:
+    0 4px 18px rgba(79,195,247,.50),
+    0 0 0 2px rgba(79,195,247,.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: swatch-shimmer 3s ease-in-out infinite;
+}
+
+@keyframes swatch-shimmer {
+  0%, 100% { box-shadow: 0 4px 18px rgba(79,195,247,.50), 0 0 0 2px rgba(79,195,247,.28); }
+  50%       { box-shadow: 0 4px 24px rgba(79,195,247,.80), 0 0 0 4px rgba(79,195,247,.45); }
+}
+
+.dc-swatch-label {
+  font-family: var(--roman);
+  font-size: .36rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(10,50,90,.72);
+  font-weight: 600;
 }
 
 .dc-palette-label {
